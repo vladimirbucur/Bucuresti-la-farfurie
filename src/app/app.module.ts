@@ -6,7 +6,7 @@ import { AppRoutingModule } from "./app-routing.module";
 
 import { environment } from '../environments/environment';
 import { AngularFireModule } from '@angular/fire/compat';
-import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 
 import { FirebaseService } from './services/firebase';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -36,7 +36,7 @@ import { SuperheroFactoryService } from "./services/superhero-factory";
     MatListModule,
     FlexLayoutModule,
     AngularFireModule.initializeApp(environment.firebase, 'AngularDemoFirebase'),
-    AngularFireDatabaseModule
+    AngularFirestoreModule
   ],
   providers: [
     FirebaseService,

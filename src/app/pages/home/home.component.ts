@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Subscription } from "rxjs";
-import { FirebaseService, IDatabaseItem } from "src/app/services/firebase";
+import { FirebaseService, IUser } from "src/app/services/firebase";
 import { SuperheroFactoryService } from "src/app/services/superhero-factory";
 
 @Component({
@@ -15,7 +15,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     subscriptionList: Subscription;
     subscriptionObj: Subscription;
 
-    listItems: IDatabaseItem[] = [];
+    userItems: IUser[] = [];
 
     constructor(
         private fbs: FirebaseService,
@@ -34,23 +34,30 @@ export class HomeComponent implements OnInit, OnDestroy {
         }
         this.isConnected = true;
         this.fbs.connectToDatabase();
-        this.subscriptionList = this.fbs.getChangeFeedList().subscribe((items: IDatabaseItem[]) => {
-            console.log("list updated: ", items);
-            this.listItems = items;
+        this.subscriptionList = this.fbs.getChangeFeedList().subscribe((items: IUser[]) => {
+            console.log("users updated: ", items);
+            this.userItems = items;
         });
-        this.subscriptionObj = this.fbs.getChangeFeedObject().subscribe((stat: IDatabaseItem) => {
+        this.subscriptionObj = this.fbs.getChangeFeedObject().subscribe((stat: IUser) => {
             console.log("object updated: ", stat);
         });
     }
 
-    addListItem() {
-        let newItemValue: string = Math.floor(Math.random() * 100).toString();
-        newItemValue = this.sfs.getName();
-        this.fbs.addListObject(newItemValue);
-    }
+    addNewUser() {
+        const newUser: IUser = {
+            username: 'john_doe',
+            password: 'password123',
+            achievements: ['first_order', 'loyal_customer'],
+            favorite_restaurants: ['restaurantId1', 'restaurantId2'],
+            visited_restaurants: ['restaurantId3', 'restaurantId4']
+        };
 
-    removeItems() {
-        this.fbs.removeListItems();
+        // Call the addUser method to add this user to Firestore
+        this.fbs.addUser(newUser).then(() => {
+            console.log('User added successfully!');
+        }).catch((error) => {
+            console.error('Error adding user: ', error);
+        });
     }
 
     disconnectFirebase() {

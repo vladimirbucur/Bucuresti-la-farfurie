@@ -1,18 +1,8 @@
-<div fxLayout="row">
-    <div fxFlex="50%" fxLayout="column">
-        <mat-list>
-            <mat-list-item>
-                <span class="label">Firebase {{isConnected ? "connected" : "disconnected"}}</span>
-            </mat-list-item>
-            <mat-divider></mat-divider>
-            <mat-list-item>
-                <button mat-button color="primary" class="full-w" (click)="connectFirebase()">Connect</button>
-            </mat-list-item>
-            <mat-divider></mat-divider>
-            <mat-list-item>
-                <button mat-button color="primary" class="full-w" (click)="addNewUser()">Add new
-                    user</button>
-            </mat-list-item>
-        </mat-list>
-    </div>
+<!-- Main container to hold the map and sidebar -->
+<div class="container">
+    <!-- The DIV that will contain the map -->
+    <div #mapViewNode class="map-view"></div>
 </div>
+
+<!-- Floating Action Button (FAB) -->
+<button class="fab" (click)="clearRouter()">x</button>

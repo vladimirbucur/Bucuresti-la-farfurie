@@ -19,12 +19,15 @@ import { MatListModule } from '@angular/material/list';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { HomeComponent } from "./pages/home/home.component";
 import { SuperheroFactoryService } from "./services/superhero-factory";
+import { LoginComponent } from './pages/login/login.component';
 
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent
+    HomeComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -36,7 +39,8 @@ import { SuperheroFactoryService } from "./services/superhero-factory";
     MatListModule,
     FlexLayoutModule,
     AngularFireModule.initializeApp(environment.firebase, 'AngularDemoFirebase'),
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    ReactiveFormsModule  
   ],
   providers: [
     FirebaseService,

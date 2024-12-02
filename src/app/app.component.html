@@ -1,9 +1,24 @@
-<nav mat-tab-nav-bar [tabPanel]="tabPanel">
-  <a mat-tab-link *ngFor="let tab of tabs" (click)="activeTab = tab.link" [active]="activeTab == tab.link"
-    [routerLink]="tab.link">{{tab.name}}</a>
-</nav>
+<!-- Header -->
+<header class="app-header">
+  <!-- Logo and App Name -->
+  <div class="logo" (click)="goToHome()">
+    <img src="assets/logo.png" alt="Logo" class="logo-img">
+  </div>
+  
+  <!-- Search Bar -->
+  <div class="search-container">
+    <input type="text" class="search-bar" placeholder="Căutați un loc..." />
+  </div>
+
+  <!-- Login Button -->
+  <div class="login-container">
+    <button class="login-btn" (click)="goToLogin()">Log In</button>
+  </div>
+</header>
+
 <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
 
+<!-- Main container to hold the routed content -->
 <div class="container">
   <router-outlet></router-outlet>
 </div>

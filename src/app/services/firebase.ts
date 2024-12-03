@@ -69,4 +69,8 @@ export class FirebaseService {
     updateUser(userId: string, user: Partial<IUser>) {
         return this.fs.collection('users').doc(userId).update(user);
     }
+
+    getRestaurants(): Observable<any[]> {
+        return this.fs.collection('restaurants').valueChanges();
+    }
 }

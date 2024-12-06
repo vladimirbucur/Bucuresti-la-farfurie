@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AbstractControl, ValidationErrors } from '@angular/forms';
+import { LoginService } from '../../services/login.service';
+import { UserService } from '../../services/user.service';
 
 export function passwordMatchValidator(group: AbstractControl): ValidationErrors | null {
   const password = group.get('password')?.value;
@@ -21,7 +23,9 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private loginService: LoginService,
+    private userService: UserService
   ) { }
 
   ngOnInit(): void {
@@ -41,9 +45,25 @@ export class LoginComponent implements OnInit {
     }
 
     const formValues = this.loginForm.value;
-    console.log('Form submitted', formValues);
+    const email = formValues.username;
+    const password = formValues.password;
 
-    // Redirect to home page after successful login
-    this.router.navigate(['/home']);
+    this.loginService.loginUser(email, password).subscribe(
+      userData => {
+        console.log('Login successful', userData);
+        this.userService.setLoggedIn(true); // Set the user as logged in
+        // Redirect to home page after successful login
+        this.router.navigate(['/home']);
+      },
+      error => {
+        console.error('Login failed', error);
+        alert(error); // Show error message
+      }
+    );
+  }
+
+   // Navigate to the register page
+   goToRegister(): void {
+    this.router.navigate(['/register']);
   }
 }

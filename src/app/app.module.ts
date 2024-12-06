@@ -7,6 +7,7 @@ import { AppRoutingModule } from "./app-routing.module";
 import { environment } from '../environments/environment';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 
 import { FirebaseService } from './services/firebase';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -22,12 +23,16 @@ import { SuperheroFactoryService } from "./services/superhero-factory";
 import { LoginComponent } from './pages/login/login.component';
 
 import { ReactiveFormsModule } from '@angular/forms';
+import { RegisterComponent } from './pages/register/register.component';
+import { RegisterService } from './services/register.service';
+import { UserService } from "./services/user.service";
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    LoginComponent
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
@@ -40,11 +45,13 @@ import { ReactiveFormsModule } from '@angular/forms';
     FlexLayoutModule,
     AngularFireModule.initializeApp(environment.firebase, 'AngularDemoFirebase'),
     AngularFirestoreModule,
+    AngularFireAuthModule,
     ReactiveFormsModule  
   ],
   providers: [
     FirebaseService,
-    SuperheroFactoryService
+    SuperheroFactoryService,
+    RegisterService
   ],
   bootstrap: [AppComponent]
 })

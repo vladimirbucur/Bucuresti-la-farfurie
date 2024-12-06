@@ -14,6 +14,18 @@
   <div class="login-container">
     <button class="login-btn" (click)="goToLogin()">Log In</button>
   </div>
+
+  <!-- My profile button -->
+  <nav>
+    <ul>
+      <li *ngFor="let tab of tabs" [class.active]="tab.link === activeTab">
+        <!-- Calls the navigate method on click, which will use the Router to navigate -->
+        <a (click)="navigate(tab.link)">{{ tab.name }}</a>
+      </li>
+    </ul>
+  </nav>
+  
+  
 </header>
 
 <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>

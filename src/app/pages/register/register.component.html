@@ -1,39 +1,48 @@
-<!-- src/app/pages/register/register.component.html -->
 <div class="register-container">
-    <h2>Register</h2>
-  
-    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" id="email" formControlName="email" class="form-control" placeholder="Enter your email">
-        <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="error-message">
-          <small *ngIf="registerForm.get('email')?.hasError('required')">Email is required.</small>
-          <small *ngIf="registerForm.get('email')?.hasError('email')">Enter a valid email.</small>
-        </div>
+  <h2>Register</h2>
+
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <!-- Form fields for name, email, password, confirmPassword -->
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input type="text" id="name" formControlName="name" class="form-control" placeholder="Enter your name">
+      <div *ngIf="registerForm.get('name')?.invalid && registerForm.get('name')?.touched" class="error-message">
+        <small *ngIf="registerForm.get('name')?.hasError('required')">Name is required.</small>
+        <small *ngIf="registerForm.get('name')?.hasError('minlength')">Name must be at least 3 characters long.</small>
       </div>
-  
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" id="password" formControlName="password" class="form-control" placeholder="Enter your password">
-        <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" class="error-message">
-          <small *ngIf="registerForm.get('password')?.hasError('required')">Password is required.</small>
-          <small *ngIf="registerForm.get('password')?.hasError('minlength')">Password must be at least 6 characters long.</small>
-        </div>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" formControlName="email" class="form-control" placeholder="Enter your email">
+      <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="error-message">
+        <small *ngIf="registerForm.get('email')?.hasError('required')">Email is required.</small>
+        <small *ngIf="registerForm.get('email')?.hasError('email')">Enter a valid email.</small>
       </div>
-  
-      <div class="form-group">
-        <label for="confirmPassword">Confirm Password</label>
-        <input type="password" id="confirmPassword" formControlName="confirmPassword" class="form-control" placeholder="Confirm your password">
-        <div *ngIf="registerForm.hasError('passwordMismatch') && registerForm.get('confirmPassword')?.touched" class="error-message">
-          <small>Passwords must match.</small>
-        </div>
+    </div>
+
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" id="password" formControlName="password" class="form-control" placeholder="Enter your password">
+      <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" class="error-message">
+        <small *ngIf="registerForm.get('password')?.hasError('required')">Password is required.</small>
+        <small *ngIf="registerForm.get('password')?.hasError('minlength')">Password must be at least 6 characters long.</small>
       </div>
-  
-      <button type="submit" class="btn btn-primary" [disabled]="registerForm.invalid">Register</button>
-    </form>
-  
-    <p class="login-link">
-      Already have an account? <a routerLink="/login">Login here</a>
-    </p>
-  </div>
-  
+    </div>
+
+    <div class="form-group">
+      <label for="confirmPassword">Confirm Password</label>
+      <input type="password" id="confirmPassword" formControlName="confirmPassword" class="form-control" placeholder="Confirm your password">
+      <div *ngIf="registerForm.hasError('passwordMismatch') && registerForm.get('confirmPassword')?.touched" class="error-message">
+        <small>Passwords must match.</small>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="registerForm.invalid">Register</button>
+  </form>
+
+  <!-- Add a link to login page -->
+  <p class="login-link">
+    Already have an account? <button (click)="goToLogin()" class="btn btn-link">Login here</button>
+  </p>
+</div>

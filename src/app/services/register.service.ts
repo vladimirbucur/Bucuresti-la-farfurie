@@ -14,18 +14,21 @@ export class RegisterService {
     private firestore: AngularFirestore  // Using the compat module for Firestore
   ) {}
 
-  registerUser(email: string, password: string): Observable<any> {
+  // Register user with name, email, and password
+  registerUser(name: string, email: string, password: string): Observable<any> {
     return new Observable(observer => {
+      // Create user with email and password
       this.afAuth.createUserWithEmailAndPassword(email, password)
         .then(userCredential => {
           const user = userCredential.user;
           if (user) {
-            // Save user data in Firestore
+            // Save user data to Firestore, including name
             this.firestore.collection('users').doc(email).set({
-            email: email,
-            achievements: [],
-            favorite_restaurants: [],
-            visited_restaurants: [],
+              name: name,  // Add name field
+              email: email,
+              achievements: [],
+              favorite_restaurants: [],
+              visited_restaurants: [],
             }).then(() => {
               observer.next('Registration successful');
               observer.complete();

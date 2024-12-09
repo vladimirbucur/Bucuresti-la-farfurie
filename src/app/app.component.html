@@ -11,20 +11,19 @@
   </div>
 
   <!-- Login Button -->
-  <div class="login-container">
+  <div class="login-container" *ngIf="!isLoggedIn">
     <button class="login-btn" (click)="goToLogin()">Log In</button>
   </div>
 
-  <!-- My profile button -->
-  <nav>
-    <ul>
-      <li *ngFor="let tab of tabs" [class.active]="tab.link === activeTab">
-        <!-- Calls the navigate method on click, which will use the Router to navigate -->
-        <a (click)="navigate(tab.link)">{{ tab.name }}</a>
-      </li>
-    </ul>
-  </nav>
-  
+  <!-- Logout Button -->
+  <div class="login-container" *ngIf="isLoggedIn">
+    <button class="login-btn" (click)="goToLogout()">Log Out</button>
+  </div>
+
+  <!-- Profile Image as Button -->
+  <div class="profile-container" *ngIf="isLoggedIn">
+    <img src="assets/profile-icon.png" alt="Profile" class="profile-img" (click)="goToProfile()">
+  </div>
   
 </header>
 

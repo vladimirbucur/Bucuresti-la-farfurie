@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Event, Router } from '@angular/router';
-import { UserService } from './services/user.service'; // Import UserService
+import { LoginService } from './services/login.service';
 
 interface ITab {
   name: string;
@@ -19,11 +19,13 @@ export class AppComponent implements OnInit {
     link: '/home'
   }];
 
+  isLoggedIn = false; // Track login state
+
   activeTab = this.tabs[0].link;
 
   constructor(
     private router: Router,  // Inject Router service
-    private userService: UserService // Inject UserService
+    private loginService: LoginService
   ) {
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
@@ -34,20 +36,9 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Subscribe to the logged status and update the tabs
-    this.userService.logged$.subscribe(loggedIn => {
-      if (loggedIn) {
-        this.tabs.push({
-          name: 'Logout',
-          link: '/logout'
-        });
-      } else {
-        this.tabs = this.tabs.filter(tab => tab.link !== '/logout'); // Remove Logout tab if logged out
-        this.tabs.push({
-          name: 'Login',
-          link: '/login'
-        });
-      }
+     // Subscribe to the logged status from AuthService to determine UI changes
+     this.loginService.getCurrentUser().subscribe(user => {
+      this.isLoggedIn = !!user;  // Set loggedIn based on whether a user is present
     });
   }
 
@@ -69,7 +60,18 @@ export class AppComponent implements OnInit {
   }
 
   goToLogout(): void {
-    this.userService.setLoggedIn(false); // Log the user out
-    this.router.navigate(['/login']); // Redirect to login page after logout
+    // Log the user out using AuthService
+    this.loginService.logoutUser().subscribe({
+      next: () => {
+        this.router.navigate(['/login']);
+      },
+      error: (err) => {
+        console.error('Error during logout:', err);
+      }
+    });
+  }
+
+  goToProfile(): void {
+    this.router.navigate(['/profile']);
   }
 }

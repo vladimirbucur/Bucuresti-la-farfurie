@@ -1,10 +1,13 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from "./app.component";
 import { AppRoutingModule } from "./app-routing.module";
 
 import { environment } from '../environments/environment';
+
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
@@ -22,20 +25,21 @@ import { HomeComponent } from "./pages/home/home.component";
 import { SuperheroFactoryService } from "./services/superhero-factory";
 import { LoginComponent } from './pages/login/login.component';
 
-import { ReactiveFormsModule } from '@angular/forms';
 import { RegisterComponent } from './pages/register/register.component';
 import { RegisterService } from './services/register.service';
-import { UserService } from "./services/user.service";
+import { ProfileComponent } from './pages/profile/profile.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MatTabsModule,
@@ -46,7 +50,8 @@ import { UserService } from "./services/user.service";
     AngularFireModule.initializeApp(environment.firebase, 'AngularDemoFirebase'),
     AngularFirestoreModule,
     AngularFireAuthModule,
-    ReactiveFormsModule  
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [
     FirebaseService,

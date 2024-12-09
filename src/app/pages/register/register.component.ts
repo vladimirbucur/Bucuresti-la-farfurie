@@ -29,6 +29,7 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void {
     // Initialize the form with validation
     this.registerForm = this.fb.group({
+      name: ['', [Validators.required, Validators.minLength(3)]],  // Name validation
       email: ['', [Validators.required, Validators.email]],  // Email validation
       password: ['', [Validators.required, Validators.minLength(6)]],  // Password validation
       confirmPassword: ['', [Validators.required]],  // Confirm password
@@ -42,11 +43,11 @@ export class RegisterComponent implements OnInit {
         return;
       }
 
-      const { email, password } = this.registerForm.value;
-      console.log('Form submitted', { email, password });
+      const { name, email, password } = this.registerForm.value;
+      console.log('Form submitted', { name, email, password });
 
       // Call the authentication service to register the user and save to Firestore
-      this.registerService.registerUser(email, password).subscribe(
+      this.registerService.registerUser(name, email, password).subscribe(
         response => {
           console.log('Registration successful', response);
           // Redirect to login page after successful registration
@@ -56,5 +57,10 @@ export class RegisterComponent implements OnInit {
           console.error('Registration failed', error);
           alert(error); // Show error message
     })
+  }
+
+  // Navigate to the login page
+  goToLogin(): void {
+    this.router.navigate(['/login']);
   }
 }

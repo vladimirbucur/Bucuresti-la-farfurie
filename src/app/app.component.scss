@@ -9,6 +9,7 @@
     height: 100px;
     width: 100%;
     box-sizing: border-box;
+    gap: 15px;
   }
   
   .logo {
@@ -45,7 +46,7 @@
   .login-btn {
     padding: 10px 15px;
     font-size: 1em;
-    color: #000000;
+    color: #ffffff;
     background-color: #719cf8;
     border: none;
     border-radius: 5px;
@@ -55,23 +56,22 @@
   .login-btn:hover {
     background-color: #3672f5;
   }
-  
-  /* Styling for the tab navigation */
-//   mat-tab-nav-bar {
-//     background-color: #f4f4f4;
-//     padding: 10px 20px;
-//   }
-  
-//   mat-tab-link {
-//     font-size: 1em;
-//     color: #333;
-//   }
-  
-//   mat-tab-link[active] {
-//     font-weight: bold;
-//     color: #007bff;
-//   }
-  
-//   .container {
-    // padding: 20px;
-//   }
+
+  /* Profile image button styles */
+  .profile-container {
+    display: inline-block;
+    cursor: pointer;
+  }
+
+  .profile-img {
+    width: 36px;  /* Adjust size to your preference */
+    height: 36px;
+    border-radius: 50%;  /* Make it a circular profile image */
+    object-fit: cover;  /* Ensure the image covers the container */
+    transition: transform 0.3s ease;  /* Smooth hover effect */
+    cursor: pointer;
+  }
+
+  .profile-img:hover {
+    transform: scale(1.1);  /* Slightly enlarge the image on hover */
+  }

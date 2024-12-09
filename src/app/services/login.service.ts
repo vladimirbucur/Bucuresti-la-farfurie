@@ -2,13 +2,15 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject  } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
+  private currentUserSubject = new BehaviorSubject<any>(null);
+  public currentUser$ = this.currentUserSubject.asObservable();
 
   constructor(
     private afAuth: AngularFireAuth, // Firebase authentication service
@@ -24,6 +26,7 @@ export class LoginService {
         this.firestore.collection('users').doc(email).get().subscribe(
           docSnapshot => {
             if (docSnapshot.exists) {
+              this.currentUserSubject.next(docSnapshot.data());
               observer.next(docSnapshot.data());
               observer.complete();
             } else {
@@ -47,6 +50,7 @@ export class LoginService {
     return new Observable(observer => {
       this.afAuth.signOut()
         .then(() => {
+          this.currentUserSubject.next(null);
           observer.next();
           observer.complete();
         })
@@ -66,6 +70,25 @@ export class LoginService {
           return null;
         }
       })
+    );
+  }
+
+  getUserProfile(): Observable<any> {
+    return this.getCurrentUser().pipe(
+      map(user => {
+        if (user && user.email) {
+          return this.firestore.collection('users').doc(user.email).valueChanges();
+        } else {
+          throw new Error('User is not logged in.');
+        }
+      })
+    );
+  }
+
+  // Check if a user is currently logged in
+  isLoggedIn(): Observable<boolean> {
+    return this.afAuth.authState.pipe(
+      map(user => !!user)  // If user is not null, logged in, otherwise false
     );
   }
 }

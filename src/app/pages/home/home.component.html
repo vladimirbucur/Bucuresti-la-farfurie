@@ -1,14 +1,8 @@
 <!-- Main container to hold the map and sidebar -->
 <div class="container">
-    <!-- Loading Screen -->
-    <div *ngIf="!loaded" class="loading-placeholder">
-      <p>Loading Map...</p>
-    </div>
-  
     <!-- The DIV that will contain the map -->
     <div #mapViewNode class="map-view"></div>
-  </div>
-  
-  <!-- Floating Action Button (FAB) -->
-  <button *ngIf="loaded" class="fab" (click)="clearRouter()">x</button>
-  
+</div>
+
+<!-- Floating Action Button (FAB) -->
+<button class="fab" (click)="clearRouter()">x</button>

@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NavigationEnd, Event, Router } from '@angular/router';
-import { LoginService } from './services/login.service';
 
 interface ITab {
   name: string;
@@ -13,20 +12,20 @@ interface ITab {
   styleUrls: ['./app.component.scss']
 })
 
-export class AppComponent implements OnInit {
+export class AppComponent {
+
   tabs: ITab[] = [{
     name: 'Home',
     link: '/home'
+  },
+  {
+    name: 'Login',
+    link: '/login'
   }];
-
-  isLoggedIn = false; // Track login state
 
   activeTab = this.tabs[0].link;
 
-  constructor(
-    private router: Router,  // Inject Router service
-    private loginService: LoginService
-  ) {
+  constructor(private router: Router) {
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
         this.activeTab = event.url;
@@ -35,43 +34,19 @@ export class AppComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-     // Subscribe to the logged status from AuthService to determine UI changes
-     this.loginService.getCurrentUser().subscribe(user => {
-      this.isLoggedIn = !!user;  // Set loggedIn based on whether a user is present
-    });
-  }
-
-  // Method to handle navigation logic
-  navigate(link: string): void {
-    this.router.navigate([link]);
-  }
-
+  // See app.component.html
   mapLoadedEvent(status: boolean) {
     console.log('The map loaded: ' + status);
   }
 
+  // Navighează la Home când se dă click pe logo
   goToHome(): void {
     this.router.navigate(['/home']);
   }
 
+  // Navighează la Login când se dă click pe Login
   goToLogin(): void {
     this.router.navigate(['/login']);
   }
-
-  goToLogout(): void {
-    // Log the user out using AuthService
-    this.loginService.logoutUser().subscribe({
-      next: () => {
-        this.router.navigate(['/login']);
-      },
-      error: (err) => {
-        console.error('Error during logout:', err);
-      }
-    });
-  }
-
-  goToProfile(): void {
-    this.router.navigate(['/profile']);
-  }
 }
+

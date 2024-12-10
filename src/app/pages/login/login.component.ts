@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AbstractControl, ValidationErrors } from '@angular/forms';
-import { LoginService } from '../../services/login.service';
 
 export function passwordMatchValidator(group: AbstractControl): ValidationErrors | null {
   const password = group.get('password')?.value;
@@ -22,15 +21,17 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private router: Router,
-    private loginService: LoginService
+    private router: Router
   ) { }
 
   ngOnInit(): void {
     // Initialize the form with validation
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],  // Email validation
+      username: ['', [Validators.required, Validators.email]],  // Email validation
       password: ['', [Validators.required, Validators.minLength(6)]], // Password min length 6
+      confirmPassword: ['', [Validators.required]], // Confirm password validator
+    },{
+      validators: passwordMatchValidator // Apply custom validator to the entire group
     });
   }
 
@@ -40,24 +41,9 @@ export class LoginComponent implements OnInit {
     }
 
     const formValues = this.loginForm.value;
-    const email = formValues.email;
-    const password = formValues.password;
+    console.log('Form submitted', formValues);
 
-    this.loginService.loginUser(email, password).subscribe(
-      userData => {
-        console.log('Login successful', userData);
-        // Redirect to home page after successful login
-        this.router.navigate(['/home']);
-      },
-      error => {
-        console.error('Login failed', error);
-        alert(error); // Show error message
-      }
-    );
-  }
-
-   // Navigate to the register page
-   goToRegister(): void {
-    this.router.navigate(['/register']);
+    // Redirect to home page after successful login
+    this.router.navigate(['/home']);
   }
 }

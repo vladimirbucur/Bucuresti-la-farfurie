@@ -7,6 +7,68 @@
   
     <!-- The DIV that will contain the map -->
     <div #mapViewNode class="map-view"></div>
+
+    <!-- Filter Sidebar -->
+    <div class="filter-container">
+      <h3>Filter Restaurants</h3>
+      
+      <label for="type-filter">Type:</label>
+      <select id="type-filter" class="filter-dropdown">
+        <option value="">All</option>
+        <option value="cafe">Cafe</option>
+        <option value="pizza">Pizza</option>
+        <option value="bar">Bar</option>
+        <option value="dessert/bakery">Dessert/Bakery</option>
+        <option value="pub">Pub</option>
+        <option value="fast-food">Fast-Food</option>
+      </select>
+      
+      <label for="cuisine-filter">Cuisine:</label>
+      <select id="cuisine-filter" class="filter-dropdown">
+        <option value="">All</option>
+        <option value="romanian">Romanian</option>
+        <option value="italian">Italian</option>
+        <option value="french">French</option>
+        <option value="greek">Greek</option>
+        <option value="mexican">Mexican</option>
+        <option value="american">American</option>
+        <option value="turkish">Turkish</option>
+        <option value="chinese">Chinese</option>
+        <option value="spanish">Spanish</option>
+        <option value="indian">Indian</option>
+        <option value="lebanese">Lebanese</option>
+        <option value="portuguese">Portuguese</option>
+        <option value="belgian">Belgian</option>
+        <option value="german">German</option>
+        <option value="argentinian">Argentinian</option>
+        <option value="brazilian">Brazilian</option>
+        <option value="british">British</option>
+        <option value="peruvian">Peruvian</option>
+        <option value="swedish">Swedish</option>
+        <option value="irish">Irish</option>
+        <option value="ukrainian">Ukrainian</option>
+        <option value="afghani">Afghani</option>
+        <option value="thai">Thai</option>
+        <option value="japanese">Japanese</option>
+      </select>
+
+      <label for="meal-filter">Meal:</label>
+      <select id="meal-filter" class="filter-dropdown">
+        <option value="">All</option>
+        <option value="breakfast">Breakfast</option>
+        <option value="lunch">Lunch</option>
+        <option value="dinner">Dinner</option>
+      </select>
+
+      <label for="rating-filter">Rating:</label>
+      <input id="rating-filter" type="number" class="filter-input" min="1" max="5" placeholder="e.g., 4">
+
+      <label for="open-hours-filter">Open Hours:</label>
+      <input id="open-hours-filter" type="time" class="filter-input">
+      
+      <button id="apply-filters" class="apply-filters-btn">Apply Filters</button>
+    </div>
+
   </div>
   
   <!-- Floating Action Button (FAB) -->

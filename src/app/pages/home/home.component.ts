@@ -92,7 +92,74 @@ import {
   
           // Fetch and plot restaurants
           this.fetchAndPlotRestaurants();
+        });
+
+        document.getElementById('apply-filters')?.addEventListener('click', () => {
+          this.applyFilters();
+        });
+    }
+
+    applyFilters() {
+      const typeFilter = (document.getElementById('type-filter') as HTMLSelectElement).value;
+      const cuisineFilter = (document.getElementById('cuisine-filter') as HTMLSelectElement).value;
+      const mealFilter = (document.getElementById('meal-filter') as HTMLSelectElement).value;
+      const ratingFilter = (document.getElementById('rating-filter') as HTMLInputElement).value;
+      const openHoursFilter = (document.getElementById('open-hours-filter') as HTMLInputElement).value;
+    
+      // Remove all existing graphics
+      this.graphicsLayer.removeAll();
+    
+      // Fetch filtered restaurants
+      this.fbs.getRestaurants().subscribe((restaurants: any[]) => {
+        const filteredRestaurants = restaurants.filter(restaurant => {
+          const matchesType = !typeFilter || restaurant.type === typeFilter;
+          const matchesCuisine = !cuisineFilter || restaurant.cuisine === cuisineFilter;
+          const matchesMeal = !mealFilter || (restaurant.meals && restaurant.meals.includes(mealFilter));
+          const matchesRating = !ratingFilter || restaurant.rating >= parseFloat(ratingFilter);
+          const matchesOpenHours = !openHoursFilter || this.isOpenAt(restaurant.original_open_hours, openHoursFilter);
+          return matchesType && matchesCuisine && matchesMeal && matchesRating && matchesOpenHours;
+        });
+    
+        // Add the filtered restaurants to the map
+        filteredRestaurants.forEach(restaurant => {
+          if (restaurant.location?.latitude && restaurant.location?.longitude) {
+            const markerColor = this.getMarkerColorBasedOnRating(restaurant.rating);
+            this.addRestaurantPoint(
+              restaurant.location.latitude,
+              restaurant.location.longitude,
+              restaurant,
+              markerColor
+            );
+          }
+        });
       });
+    }
+
+    isOpenAt(openHours: any, time: string): boolean {
+      const dayOfWeek = new Date().toLocaleString("en-US", { weekday: "short" });
+    
+      if (openHours[dayOfWeek]) {
+        return openHours[dayOfWeek].some((interval: string) => {
+          const [start, end] = interval.split("-");
+    
+          const timeInMinutes = this.convertToMinutes(time);
+          const startInMinutes = this.convertToMinutes(start);
+          const endInMinutes = this.convertToMinutes(end);
+    
+          if (endInMinutes < startInMinutes) {
+            return timeInMinutes >= startInMinutes || timeInMinutes <= endInMinutes;
+          }
+    
+          return timeInMinutes >= startInMinutes && timeInMinutes <= endInMinutes;
+        });
+      }
+    
+      return false;
+    }
+    
+    convertToMinutes(time: string): number {
+      const [hours, minutes] = time.split(":").map(Number);
+      return hours * 60 + minutes;
     }
 
     fetchAndPlotRestaurants() {

@@ -15,6 +15,7 @@ export class MapService {
   private view: esri.MapView;
   private graphicsLayer: esri.GraphicsLayer;
   private mapLoadedSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public restaurantClicked = new BehaviorSubject<any>(null); // Emits restaurant data on click
 
   // Track the currently selected (black) marker
   public selectedMarker: esri.Graphic | null = null;
@@ -41,13 +42,32 @@ export class MapService {
     this.view.when().then(() => {
       this.mapLoadedSubject.next(true); // Notify that the map is loaded
     });
+
+    this.view.on("click", (event: esri.ViewClickEvent) => {
+      this.view.hitTest(event).then((response) => {
+        const results = response.results;
+        const graphicResult = results.find((result) => {
+          // Check if the result has a `graphic` property and belongs to the graphicsLayer
+          return (
+            (result as any).graphic && 
+            (result as any).graphic.layer === this.graphicsLayer
+          );
+        });
+    
+        if (graphicResult) {
+          const graphic = (graphicResult as any).graphic; // Access the graphic safely
+          const restaurantData = graphic.attributes;
+          this.restaurantClicked.next(restaurantData); // Emit clicked restaurant's data
+        }
+      });
+    });
   }
 
   getMapLoaded() {
     return this.mapLoadedSubject.asObservable();
   }
 
-  addMarker(lat: number, lng: number, color: number[]) {
+  addMarker(lat: number, lng: number, color: number[], data: any) {
     const point = new Point({
       longitude: lng,
       latitude: lat,
@@ -59,7 +79,7 @@ export class MapService {
       outline: {
         color: [255, 255, 255], // White outline
         width: 1,
-      },
+      }
     };
 
     const pointGraphic = new Graphic({
@@ -68,6 +88,21 @@ export class MapService {
     });
 
     this.graphicsLayer.add(pointGraphic);
+
+    const markerSymbol = {
+      type: "simple-marker",
+      color: color,
+      outline: {
+        color: [255, 255, 255], // White outline
+        width: 1,
+      }
+    };
+    const marker = new Graphic({
+      geometry: point,
+      symbol: markerSymbol,
+      attributes: data, // Attach restaurant data
+    });
+    this.graphicsLayer.add(marker);
 
     return pointGraphic; // Return the graphic object for reference
   }

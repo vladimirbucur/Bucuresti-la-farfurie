@@ -8,6 +8,17 @@
     <!-- The DIV that will contain the map -->
     <div #mapViewNode class="map-view"></div>
 
+    <!-- Restaurant Popup -->
+    <div *ngIf="selectedRestaurant" class="popup">
+      <button class="close-btn" (click)="closePopup()">X</button>
+      <h3>{{ selectedRestaurant.name }}</h3>
+      <p><strong>Address:</strong> {{ selectedRestaurant.address }}</p>
+      <p><strong>Rating:</strong> {{ selectedRestaurant.rating }}</p>
+      <p><strong>Price Range:</strong> {{ selectedRestaurant.price_range }}</p>
+      <p><strong>Opening Hours:</strong></p>
+      <pre>{{ selectedRestaurant.original_open_hours }}</pre>
+    </div>
+
     <!-- Filter Sidebar -->
     <div class="filter-container">
       <h3>Filter Restaurants</h3>

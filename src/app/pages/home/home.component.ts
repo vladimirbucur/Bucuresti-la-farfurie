@@ -18,6 +18,7 @@ import { MapService } from 'src/app/services/map.service'; // Import the MapServ
   styleUrls: ["./home.component.scss"]
 })
 export class HomeComponent implements OnInit, OnDestroy {
+  selectedRestaurant: any = null; // Holds the data for the clicked restaurant
   @Output() mapLoadedEvent = new EventEmitter<boolean>();
 
   @ViewChild("mapViewNode", { static: true }) private mapViewEl: ElementRef;
@@ -82,6 +83,26 @@ export class HomeComponent implements OnInit, OnDestroy {
     document.getElementById('apply-filters')?.addEventListener('click', () => {
       this.applyFilters();
     });
+
+    // Fetch restaurant data from Firebase and add markers
+    this.fbs.getRestaurants().subscribe((restaurants: any[]) => {
+      restaurants.forEach((restaurant) => {
+        // Add a marker for each restaurant
+        this.mapService.addMarker(
+          restaurant.latitude,
+          restaurant.longitude,
+          [255, 0, 0], // Marker color
+          restaurant
+        );
+      });
+    });
+
+    // Subscribe to restaurant click events
+    this.mapService.restaurantClicked.subscribe((restaurant) => {
+      if (restaurant) {
+        this.selectedRestaurant = restaurant; // Show popup with restaurant details
+      }
+    });
   }
 
   applyFilters() {
@@ -112,7 +133,8 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.mapService.addMarker(
             restaurant.location.latitude,
             restaurant.location.longitude,
-            markerColor
+            markerColor,
+            restaurant
           );
         }
       });
@@ -156,7 +178,8 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.mapService.addMarker(
             restaurant.location.latitude,
             restaurant.location.longitude,
-            markerColor
+            markerColor,
+            restaurant
           );
         }
       });
@@ -185,5 +208,9 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   clearRouter() {
     this.mapService.clearMarkers();
+  }
+
+  closePopup() {
+    this.selectedRestaurant = null; // Close the popup
   }
 }

@@ -93,7 +93,8 @@ export class AppComponent implements OnInit {
       this.mapService.addMarker(
         restaurant.location.latitude,
         restaurant.location.longitude,
-        markerColor
+        markerColor,
+        restaurant
       );
     }
   }

@@ -20,7 +20,9 @@
     </div>
 
     <!-- Filter Sidebar -->
-    <div class="filter-container">
+    <div *ngIf="filterPopupService.isPopupVisible$ | async" class="filter-container">
+      <button class="close-btn" (click)="filterPopupService.closePopup()">X</button>
+
       <h3>Filter Restaurants</h3>
       
       <label for="type-filter">Type:</label>
@@ -77,7 +79,7 @@
       <label for="open-hours-filter">Open Hours:</label>
       <input id="open-hours-filter" type="time" class="filter-input">
       
-      <button id="apply-filters" class="apply-filters-btn">Apply Filters</button>
+      <button id="apply-filters" class="apply-filters-btn" (click)="applyFilters()">Apply Filters</button>
     </div>
 
   </div>

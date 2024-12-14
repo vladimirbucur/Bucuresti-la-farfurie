@@ -1,122 +1,159 @@
 /* Header Styles */
 .app-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 30px;
-    background-color: #FFF4B5;
-    color: #ffffff;
-    height: 100px;
-    width: 100%;
-    box-sizing: border-box;
-    gap: 15px;
-  }
-  
-  .logo {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-  }
-  
-  .logo-img {
-    width: 200px;
-    height: auto;
-    margin-right: 10px;
-  }
-  
-  .search-container {
-    position: relative;
-    width: 100%;
-    max-width: 400px;
-    margin: 0 auto;
-  }
-  
-  .search-bar {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-  }
-  
-  .search-dropdown {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 105%;
-    background: white;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    max-height: 200px;
-    overflow-y: auto;
-    animation: slideDown 0.3s ease;
-  }
-  
-  .search-dropdown ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .search-dropdown li {
-    padding: 10px;
-    cursor: pointer;
-    color: #333;
-  }
-  
-  .search-dropdown li:hover {
-    background-color: #f0f0f0;
-  }
-  
-  .search-dropdown li:active {
-    background-color: #dcdcdc; /* Change color when item is clicked */
-  }
-  
-  @keyframes slideDown {
-    from {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }  
-  
-  .login-container {
-    display: flex;
-    align-items: center;
-  }
-  
-  .login-btn {
-    padding: 10px 15px;
-    font-size: 1em;
-    color: #ffffff;
-    background-color: #719cf8;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .login-btn:hover {
-    background-color: #3672f5;
-  }
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background-color: #FFF4B5;
+  color: #ffffff;
+  height: 100px;
+  width: 100%;
+  box-sizing: border-box;
+  gap: 15px;
+}
 
-  /* Profile image button styles */
-  .profile-container {
-    display: inline-block;
-    cursor: pointer;
-  }
+.logo {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
 
-  .profile-img {
-    width: 36px;  /* Adjust size to your preference */
-    height: 36px;
-    border-radius: 50%;  /* Make it a circular profile image */
-    object-fit: cover;  /* Ensure the image covers the container */
-    transition: transform 0.3s ease;  /* Smooth hover effect */
-    cursor: pointer;
-  }
+.logo-img {
+  width: 200px;
+  height: auto;
+  margin-right: 10px;
+}
 
-  .profile-img:hover {
-    transform: scale(1.1);  /* Slightly enlarge the image on hover */
+/* Wrapper for search bar and filters icon */
+.search-filters-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  width: auto; /* Allow the wrapper to adjust to the content width */
+}
+
+.search-container {
+  position: relative;
+  display: flex;
+  align-items: center; /* Ensures the search bar is vertically aligned */
+  max-width: 300px; /* Adjust this width to fit properly */
+  flex-grow: 1; /* This will ensure that the search bar takes as much space as needed */
+}
+
+.search-bar {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  width: 300px;
+  box-sizing: border-box;
+}
+
+.filters-container {
+  display: inline-block;
+  cursor: pointer;
+  padding: 6px;
+  background-color: #719cf8;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  margin-left: 8px; /* Adds a little more space between search bar and filter icon */
+}
+
+.filters-container:hover {
+  background-color: #3672f5;
+  transform: scale(1.1);
+}
+
+.filters-icon {
+  width: 23px;
+  height: 23px;
+  object-fit: contain;
+}
+
+.filters-icon:hover {
+  transform: scale(1.1);
+}
+
+.search-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 105%;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  max-height: 200px;
+  overflow-y: auto;
+  animation: slideDown 0.3s ease;
+}
+
+.search-dropdown ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.search-dropdown li {
+  padding: 10px;
+  cursor: pointer;
+  color: #333;
+}
+
+.search-dropdown li:hover {
+  background-color: #f0f0f0;
+}
+
+.search-dropdown li:active {
+  background-color: #dcdcdc; /* Change color when item is clicked */
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
   }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.login-container {
+  display: flex;
+  align-items: center;
+}
+
+.login-btn {
+  padding: 10px 15px;
+  font-size: 1em;
+  color: #ffffff;
+  background-color: #719cf8;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.login-btn:hover {
+  background-color: #3672f5;
+}
+
+/* Profile image button styles */
+.profile-container {
+  display: inline-block;
+  cursor: pointer;
+}
+
+.profile-img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.profile-img:hover {
+  transform: scale(1.1);
+}

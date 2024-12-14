@@ -5,6 +5,7 @@ import { FirebaseService, IUser } from "src/app/services/firebase";
 import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { MapService } from './services/map.service'; // Import MapService
+import { FilterPopupService } from './services/filter-popup.service';
 
 interface ITab {
   name: string;
@@ -28,6 +29,7 @@ export class AppComponent implements OnInit {
   restaurants: any[] = []; // Array to hold restaurant data
   filteredRestaurants: any[] = []; // Array to hold search results
   selectedRestaurant: any; // To hold the selected restaurant
+  isPopupVisible: boolean;
 
   @ViewChild('mapViewNode', { static: true }) private mapViewEl: ElementRef;
 
@@ -35,7 +37,8 @@ export class AppComponent implements OnInit {
     private router: Router,  // Inject Router service
     private loginService: LoginService,
     private fbs: FirebaseService, // Inject Firestore service
-    private mapService: MapService // Inject MapService
+    private mapService: MapService, // Inject MapService
+    public filterPopupService: FilterPopupService
   ) {
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
@@ -71,6 +74,14 @@ export class AppComponent implements OnInit {
     if (this.mapViewEl) {
       this.mapService.initializeMap(this.mapViewEl.nativeElement);
     }
+
+    this.filterPopupService.isPopupVisible$.subscribe((visible) => {
+      this.isPopupVisible = visible;
+    });
+  }
+
+  toggleFilterPopup() {
+    this.filterPopupService.togglePopup();
   }
 
   // Method to update filtered restaurants based on the search term

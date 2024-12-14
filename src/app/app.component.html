@@ -6,22 +6,29 @@
   </div>
 
    
-<!-- Search Bar -->
-  <div class="search-container">
-    <input
-      type="text"
-      class="search-bar"
-      placeholder="Căutați un loc..."
-      [formControl]="searchControl" />
+<!-- Search Bar and Filters Wrapper -->
+  <div class="search-filters-wrapper">
+    <div class="search-container">
+      <input
+        type="text"
+        class="search-bar"
+        placeholder="Căutați un loc..."
+        [formControl]="searchControl" />
 
-    <!-- Dropdown for filtered results -->
-    <div class="search-dropdown" *ngIf="filteredRestaurants.length > 0 && filteredRestaurants.length !== 2376">
-      <ul>
-        <li *ngFor="let restaurant of filteredRestaurants" (click)="selectRestaurant(restaurant)">
-          {{ restaurant.name }}
-        </li>
-      </ul>
+      <!-- Dropdown for filtered results -->
+      <div class="search-dropdown" *ngIf="filteredRestaurants.length > 0 && filteredRestaurants.length !== 2376">
+        <ul>
+          <li *ngFor="let restaurant of filteredRestaurants" (click)="selectRestaurant(restaurant)">
+            {{ restaurant.name }}
+          </li>
+        </ul>
+      </div>
     </div>
+
+    <!-- Filters Button -->
+    <button class="filters-container" (click)="toggleFilterPopup()">
+      <img src="assets/filters-icon.png" alt="Filters" class="filters-icon">
+    </button>
   </div>
 
   <!-- Login Button -->
@@ -39,10 +46,6 @@
     <img src="assets/profile-icon.png" alt="Profile" class="profile-img" (click)="goToProfile()">
   </div>
   
-  <!-- <div *ngFor="let restaurant of filteredRestaurants">
-    <p>{{ restaurant.name }}</p>
-  </div>
-   -->
 </header>
 
 <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>

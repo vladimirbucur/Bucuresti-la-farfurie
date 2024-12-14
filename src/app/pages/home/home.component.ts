@@ -11,6 +11,7 @@ import { Subscription } from "rxjs";
 import { FirebaseService, IUser } from "src/app/services/firebase";
 import { SuperheroFactoryService } from "src/app/services/superhero-factory";
 import { MapService } from 'src/app/services/map.service'; // Import the MapService
+import { FilterPopupService } from 'src/app/services/filter-popup.service';
 
 @Component({
   selector: "app-esri-map",
@@ -49,7 +50,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   constructor(
     private fbs: FirebaseService,
     private sfs: SuperheroFactoryService,
-    private mapService: MapService // Inject MapService here
+    private mapService: MapService,
+    public filterPopupService: FilterPopupService
   ) {}
 
   ngOnInit() {
@@ -139,6 +141,9 @@ export class HomeComponent implements OnInit, OnDestroy {
         }
       });
     });
+
+    console.log('Filters applied');
+    this.filterPopupService.closePopup();
   }
 
   isOpenAt(openHours: any, time: string): boolean {

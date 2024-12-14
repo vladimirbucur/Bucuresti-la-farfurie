@@ -68,17 +68,20 @@ export class AppComponent implements OnInit {
         distinctUntilChanged() // Ignore if the value hasn’t changed
       )
       .subscribe(searchTerm => {
-        this.updateFilteredRestaurants(searchTerm);
+        if(this.searchControl.value !== this.selectedRestaurant?.name) {
+          this.updateFilteredRestaurants(searchTerm);
+          this.mapService.clearSelectedMarkers();
+      }});
+      
+
+      if (this.mapViewEl) {
+        this.mapService.initializeMap(this.mapViewEl.nativeElement);
+      }
+
+      this.filterPopupService.isPopupVisible$.subscribe((visible) => {
+        this.isPopupVisible = visible;
       });
-
-    if (this.mapViewEl) {
-      this.mapService.initializeMap(this.mapViewEl.nativeElement);
-    }
-
-    this.filterPopupService.isPopupVisible$.subscribe((visible) => {
-      this.isPopupVisible = visible;
-    });
-  }
+  }  
 
   toggleFilterPopup() {
     this.filterPopupService.togglePopup();
@@ -108,6 +111,9 @@ export class AppComponent implements OnInit {
         restaurant
       );
     }
+
+    this.searchControl.setValue(restaurant.name); // Set the selected restaurant name
+    this.filteredRestaurants = []; // Hide the dropdown
   }
 
   // Method to handle navigation logic
@@ -141,5 +147,10 @@ export class AppComponent implements OnInit {
 
   goToProfile(): void {
     this.router.navigate(['/profile']);
+  }
+
+  clearSearch(): void {
+    this.searchControl.setValue('');
+    this.mapService.clearSelectedMarkers();
   }
 }

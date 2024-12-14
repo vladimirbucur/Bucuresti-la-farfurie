@@ -7,23 +7,31 @@
 
    
 <!-- Search Bar and Filters Wrapper -->
-  <div class="search-filters-wrapper">
-    <div class="search-container">
-      <input
-        type="text"
-        class="search-bar"
-        placeholder="Căutați un loc..."
-        [formControl]="searchControl" />
+<div class="search-filters-wrapper">
+  <div class="search-container">
+    <input
+      type="text"
+      class="search-bar"
+      placeholder="Căutați un loc..."
+      [formControl]="searchControl" />
 
-      <!-- Dropdown for filtered results -->
-      <div class="search-dropdown" *ngIf="filteredRestaurants.length > 0 && filteredRestaurants.length !== 2376">
-        <ul>
-          <li *ngFor="let restaurant of filteredRestaurants" (click)="selectRestaurant(restaurant)">
-            {{ restaurant.name }}
-          </li>
-        </ul>
-      </div>
+    <!-- Clear Search Button -->
+    <button
+      class="clear-search-btn"
+      *ngIf="searchControl.value"
+      (click)="clearSearch()">
+      &#x2715;
+    </button>
+
+    <!-- Dropdown for filtered results -->
+    <div class="search-dropdown" *ngIf="filteredRestaurants.length > 0 && filteredRestaurants.length !== 2376">
+      <ul>
+        <li *ngFor="let restaurant of filteredRestaurants" (click)="selectRestaurant(restaurant)">
+          {{ restaurant.name }}
+        </li>
+      </ul>
     </div>
+  </div>
 
     <!-- Filters Button -->
     <button class="filters-container" (click)="toggleFilterPopup()">

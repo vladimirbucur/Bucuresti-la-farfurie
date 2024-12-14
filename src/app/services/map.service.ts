@@ -69,11 +69,11 @@ export class MapService {
 
   addMarker(lat: number, lng: number, color: number[], data: any) {
     const point = new Point({
-      longitude: lng,
       latitude: lat,
+      longitude: lng,
     });
 
-    const simpleMarkerSymbol = {
+    const markerSymbol = {
       type: "simple-marker",
       color: color,
       outline: {
@@ -84,25 +84,11 @@ export class MapService {
 
     const pointGraphic = new Graphic({
       geometry: point,
-      symbol: simpleMarkerSymbol,
-    });
-
-    this.graphicsLayer.add(pointGraphic);
-
-    const markerSymbol = {
-      type: "simple-marker",
-      color: color,
-      outline: {
-        color: [255, 255, 255], // White outline
-        width: 1,
-      }
-    };
-    const marker = new Graphic({
-      geometry: point,
       symbol: markerSymbol,
       attributes: data, // Attach restaurant data
     });
-    this.graphicsLayer.add(marker);
+
+    this.graphicsLayer.add(pointGraphic);
 
     return pointGraphic; // Return the graphic object for reference
   }

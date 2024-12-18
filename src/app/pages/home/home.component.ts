@@ -12,6 +12,10 @@ import { FirebaseService, IUser } from "src/app/services/firebase";
 import { SuperheroFactoryService } from "src/app/services/superhero-factory";
 import { MapService } from 'src/app/services/map.service'; // Import the MapService
 import { FilterPopupService } from 'src/app/services/filter-popup.service';
+import { LoginService } from 'src/app/services/login.service';
+import { User } from 'src/app/models'; // Import the User model
+import { UserService } from 'src/app/services/user.service'; // Import the UserService
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Component({
   selector: "app-esri-map",
@@ -51,7 +55,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     private fbs: FirebaseService,
     private sfs: SuperheroFactoryService,
     private mapService: MapService,
-    public filterPopupService: FilterPopupService
+    public filterPopupService: FilterPopupService,
+    private userService: UserService,
+    private loginService: LoginService,
+    private firestore: AngularFirestore
   ) {}
 
   ngOnInit() {
@@ -103,6 +110,59 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.mapService.restaurantClicked.subscribe((restaurant) => {
       if (restaurant) {
         this.selectedRestaurant = restaurant; // Show popup with restaurant details
+      }
+    });
+  }
+
+  // Check if the restaurant is already in the visited list
+  isRestaurantVisited(restaurant: any): boolean {
+    const user = this.getCurrentUser(); // Get the current user (you can replace this with actual logic)
+    
+    if (user && Array.isArray(user.visited_restaurants)) {
+      return user.visited_restaurants.includes(restaurant.name);
+    } else {
+      return false; // If no valid user or visited_restaurants, return false
+    }
+  }
+
+  // Get the current user (this is a placeholder, replace with actual logic to get the current user)
+  getCurrentUser(): IUser {
+    return this.userItems[0]; // Assuming the first user is the current user for now
+  }
+
+  markAsVisited(restaurant: any) {
+    this.loginService.getCurrentUser().subscribe(user => {
+      if (user && user.email) {
+        const userRef = this.firestore.collection('users').doc(user.email);
+  
+        // Get the user's current visited restaurants list
+        userRef.get().subscribe(docSnapshot => {
+          if (docSnapshot.exists) {
+            const userData = docSnapshot.data() as User;
+            const visitedRestaurants = userData.visited_restaurants || [];
+  
+            if (!visitedRestaurants.includes(restaurant.id)) {
+              visitedRestaurants.push(restaurant.id);
+  
+              // Update the user's visited restaurants in Firestore
+              userRef.update({ visited_restaurants: visitedRestaurants })
+                .then(() => {
+                  console.log('Restaurant marked as visited');
+                })
+                .catch(error => {
+                  console.error('Error marking restaurant as visited:', error);
+                });
+            } else {
+              console.log('Restaurant is already in the visited list.');
+            }
+          } else {
+            console.error('User data not found.');
+          }
+        }, error => {
+          console.error('Error fetching user data:', error);
+        });
+      } else {
+        console.error('User is not logged in.');
       }
     });
   }

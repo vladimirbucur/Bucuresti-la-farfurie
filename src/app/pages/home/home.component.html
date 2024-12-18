@@ -17,6 +17,9 @@
       <p><strong>Price Range:</strong> {{ selectedRestaurant.price_range }}</p>
       <p><strong>Opening Hours:</strong></p>
       <pre>{{ selectedRestaurant.original_open_hours }}</pre>
+      <button *ngIf="!isRestaurantVisited(selectedRestaurant)" class="mark-visited-btn" (click)="markAsVisited(selectedRestaurant)">
+    Mark as Visited
+  </button>
     </div>
 
     <!-- Filter Sidebar -->

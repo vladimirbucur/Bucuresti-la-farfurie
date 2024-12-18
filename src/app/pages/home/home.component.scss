@@ -175,3 +175,17 @@
 .close-btn:hover {
   color: #000000;
 }
+
+.mark-visited-btn {
+  background-color: #28a745; /* Green color */
+  color: white;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.mark-visited-btn:hover {
+  background-color: #218838;
+}

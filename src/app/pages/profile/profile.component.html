@@ -1,57 +1,57 @@
-<!-- Loading Spinner -->
-<div *ngIf="isLoading" class="loading">
-    <p>Loading profile...</p>
+<!-- Profile Data -->
+<div *ngIf="!isLoading && user" class="profile-container">
+  <div class="profile-header">
+    <h1>{{ user.name }}</h1>
   </div>
-  
-  <!-- Profile Data -->
-  <div *ngIf="!isLoading && user" class="profile-container">
-    <div class="profile-header">
-      <h1>{{ user.name }}</h1>
+
+  <div class="profile-details">
+    <!-- Favourite Restaurants Section -->
+    <div>
+      <h2>Favourite Restaurants</h2>
+      <ul *ngIf="favoriteRestaurants?.length > 0; else noFavorites">
+        <li *ngFor="let restaurant of favoriteRestaurants" class="restaurant-card">
+          <div class="card-header">
+            <h3>{{ restaurant.name }}</h3>
+            <p><span class="restaurant-type">{{ restaurant.type }}</span> - Rating: {{ restaurant.rating }}/5</p>
+          </div>
+          <div class="card-body">
+            <p><strong>Address:</strong> {{ restaurant.address }}</p>
+          </div>
+        </li>
+      </ul>
+      <ng-template #noFavorites>
+        <p>No favourite restaurants found.</p>
+      </ng-template>
     </div>
-  
-    <div class="profile-details">
-      <!-- Favourite Restaurants Section -->
-      <div>
-        <h2>Favourite Restaurants</h2>
-        <ul *ngIf="favoriteRestaurants?.length > 0; else noFavorites">
-          <li *ngFor="let restaurant of favoriteRestaurants">
-            <strong>{{ restaurant.name }}</strong> 
-            ({{ restaurant.type }} - Rating: {{ restaurant.rating }}/5)
-            <br>
-            Address: {{ restaurant.address }}
-          </li>
-        </ul>
-        <ng-template #noFavorites>
-          <p>No favourite restaurants found.</p>
-        </ng-template>
-      </div>
-  
-      <!-- Visited Restaurants Section -->
-      <div>
-        <h2>Visited Restaurants</h2>
-        <ul *ngIf="visitedRestaurants?.length > 0; else noVisited">
-          <li *ngFor="let restaurant of visitedRestaurants">
-            <strong>{{ restaurant.name }}</strong> 
-            ({{ restaurant.type }} - Rating: {{ restaurant.rating }}/5)
-            <br>
-            Address: {{ restaurant.address }}
-          </li>
-        </ul>
-        <ng-template #noVisited>
-          <p>No visited restaurants found.</p>
-        </ng-template>
-      </div>
-  
-      <!-- Achievements Section -->
-      <div>
-        <h2>Achievements</h2>
-        <ul *ngIf="user.achievements?.length > 0; else noAchievements">
-          <li *ngFor="let achievement of user.achievements">{{ achievement }}</li>
-        </ul>
-        <ng-template #noAchievements>
-          <p>No achievements yet.</p>
-        </ng-template>
-      </div>
+
+    <!-- Visited Restaurants Section -->
+    <div>
+      <h2>Visited Restaurants</h2>
+      <ul *ngIf="visitedRestaurants?.length > 0; else noVisited">
+        <li *ngFor="let restaurant of visitedRestaurants" class="restaurant-card">
+          <div class="card-header">
+            <h3>{{ restaurant.name }}</h3>
+            <p><span class="restaurant-type">{{ restaurant.type }}</span> - Rating: {{ restaurant.rating }}/5</p>
+          </div>
+          <div class="card-body">
+            <p><strong>Address:</strong> {{ restaurant.address }}</p>
+          </div>
+        </li>
+      </ul>
+      <ng-template #noVisited>
+        <p>No visited restaurants found.</p>
+      </ng-template>
+    </div>
+
+    <!-- Achievements Section -->
+    <div>
+      <h2>Achievements</h2>
+      <ul *ngIf="user.achievements?.length > 0; else noAchievements">
+        <li *ngFor="let achievement of user.achievements">{{ achievement }}</li>
+      </ul>
+      <ng-template #noAchievements>
+        <p>No achievements yet.</p>
+      </ng-template>
     </div>
   </div>
-  
+</div>

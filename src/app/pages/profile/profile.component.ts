@@ -189,6 +189,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
     });
   }
 
+  getAchievementLogo(achievement: string): string {
+    return `assets/${achievement.toLowerCase().replace(/ /g, '_')}.png`;
+  }
+
   calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
     const R = 6371; // Radius of the Earth in km
     const dLat = this.deg2rad(lat2 - lat1);

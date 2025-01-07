@@ -48,16 +48,24 @@
     <h2>Achievements</h2>
     <ul *ngIf="user.achievements?.length > 0; else noAchievements">
       <li *ngFor="let achievement of user.achievements" class="achievement-card">
-        <div class="card-header">
-          <h3>{{ achievement }}</h3>
+        <div>
+          <div class="card-header">
+            <h3>{{ achievement }}</h3>
+          </div>
+          <div class="card-body">
+            <p>Congratulations on earning the "{{ achievement }}" achievement!</p>
+          </div>
         </div>
-        <div class="card-body">
-          <p>Congratulations on earning the "{{ achievement }}" achievement!</p>
-        </div>
+        <!-- Achievement Logo -->
+        <img
+          [src]="getAchievementLogo(achievement)"
+          alt="{{ achievement }} logo"
+          class="achievement-logo"
+        />
       </li>
     </ul>
     <ng-template #noAchievements>
-      <p>No achievements yet.</p>
+      <p class="no-achievements">No achievements yet.</p>
     </ng-template>
   </div>
 </div>

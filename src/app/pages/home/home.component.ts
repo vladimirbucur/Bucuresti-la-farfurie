@@ -44,7 +44,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   subscriptionList: Subscription;
   subscriptionObj: Subscription;
 
-  userItems: IUser[] = [];
   view: any; // Define the 'view' property
 
   constructor(
@@ -60,13 +59,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
     this.isConnected = true;
     this.fbs.connectToDatabase();
-    this.subscriptionList = this.fbs.getChangeFeedList().subscribe((items: IUser[]) => {
-      console.log("users updated: ", items);
-      this.userItems = items;
-    });
-    this.subscriptionObj = this.fbs.getChangeFeedObject().subscribe((stat: IUser) => {
-      console.log("object updated: ", stat);
-    });
 
     // Initialize map using the mapService
     this.mapService.initializeMap(this.mapViewEl.nativeElement);

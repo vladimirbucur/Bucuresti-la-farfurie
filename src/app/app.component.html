@@ -39,20 +39,18 @@
     </button>
   </div>
 
-  <!-- Login Button -->
-  <div class="login-container" *ngIf="!isLoggedIn">
-    <button class="login-btn" (click)="goToLogin()">Log In</button>
-  </div>
-
-  <!-- Logout Button -->
-  <div class="login-container" *ngIf="isLoggedIn">
-    <button class="login-btn" (click)="goToLogout()">Log Out</button>
-  </div>
-
-  <!-- Profile Image as Button -->
-  <div class="profile-container" *ngIf="isLoggedIn">
-    <img src="assets/profile-icon.png" alt="Profile" class="profile-img" (click)="goToProfile()">
-  </div>
+  <div *ngIf="isLoading; else loadedContent">Loading...</div>
+  <ng-template #loadedContent>
+    <div class="login-container" *ngIf="!isLoggedIn">
+      <button class="login-btn" (click)="goToLogin()">Log In</button>
+    </div>
+    <div class="login-container" *ngIf="isLoggedIn">
+      <button class="login-btn" (click)="goToLogout()">Log Out</button>
+    </div>
+    <div class="profile-container" *ngIf="isLoggedIn">
+      <img src="assets/profile-icon.png" alt="Profile" class="profile-img" (click)="goToProfile()">
+    </div>
+  </ng-template>
   
 </header>
 

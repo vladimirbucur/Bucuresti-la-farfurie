@@ -25,15 +25,15 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     // Check if user is logged in before attempting to fetch the profile data
-    this.loginService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe(user => {
-      this.user = user; // Set user data
-      if (this.user) {
+    this.loginService.getCurrentUser().subscribe(user => {
+      if (user) {
         this.fetchUserProfile();
       } else {
-        console.log('1 User is not logged in.');
+        console.error('User is not logged in.');
         this.isLoading = false;
       }
-    });
+    }
+    );
   }
 
   ngOnDestroy(): void {

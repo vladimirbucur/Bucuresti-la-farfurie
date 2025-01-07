@@ -41,7 +41,7 @@
 }
 
 /* Card Styles for Restaurants */
-.restaurant-card {
+.restaurant-card, .achievement-card {
   background-color: #ffffff;
   margin-bottom: 20px;
   padding: 20px;
@@ -51,9 +51,15 @@
   border-left: 5px solid #719cf8; /* Adds a blue accent on the left side */
 }
 
-.restaurant-card:hover {
+.restaurant-card:hover, .achievement-card:hover {
   transform: translateY(-5px); /* Lifts the card on hover */
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.no-achievements {
+  text-align: center;
+  font-style: italic;
+  color: #888;
 }
 
 /* Card Header */

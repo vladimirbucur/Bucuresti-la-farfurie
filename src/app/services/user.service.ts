@@ -82,4 +82,19 @@ export class UserService {
       })
     );
   }
+
+  updateUserAchievements(user: User, achievement: string): void {
+    if (!user.achievements.includes(achievement)) {
+      user.achievements.push(achievement);
+      this.firestore.collection('users').doc(user.email).update({
+        achievements: user.achievements
+      }).then(() => {
+        console.log(`Achievement '${achievement}' successfully added for user ${user.email}`);
+      }).catch(error => {
+        console.error('Error updating achievements:', error);
+      });
+    } else {
+      console.log(`User ${user.email} already has the achievement '${achievement}'`);
+    }
+  }
 }

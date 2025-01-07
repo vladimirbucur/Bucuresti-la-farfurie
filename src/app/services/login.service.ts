@@ -17,6 +17,14 @@ export class LoginService {
     private firestore: AngularFirestore // Firebase Firestore service
   ) {}
 
+  ngOnInit(): void {
+    // log out the user when the app starts
+    this.logoutUser().subscribe(
+      () => console.log('Logged out user.'),
+      error => console.error('Error logging out user:', error)
+    );
+  }
+
   // Login a user with email and password
   loginUser(email: string, password: string): Observable<any> {
   return new Observable(observer => {
@@ -82,13 +90,6 @@ export class LoginService {
           throw new Error('User is not logged in.');
         }
       })
-    );
-  }
-
-  // Check if a user is currently logged in
-  isLoggedIn(): Observable<boolean> {
-    return this.afAuth.authState.pipe(
-      map(user => !!user)  // If user is not null, logged in, otherwise false
     );
   }
 }

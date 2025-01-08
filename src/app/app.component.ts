@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
   }];
 
   isLoggedIn = false; // Track login state
-  isLoading = true; // Track loading state
+  isLoading = false; // Track loading state
   activeTab = this.tabs[0].link;
   searchControl = new FormControl(''); // Form control for the search input
   restaurants: any[] = []; // Array to hold restaurant data
@@ -51,11 +51,9 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     // Subscribe to the logged status from AuthService to determine UI changes
-    this.isLoading = true;
     this.loginService.getCurrentUser().subscribe(user => {
       this.isLoggedIn = !!user;
       console.log('user:', user.email);
-      this.isLoading = false; // Finalizează încărcarea
     });
     
 

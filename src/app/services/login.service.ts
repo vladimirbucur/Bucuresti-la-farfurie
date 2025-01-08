@@ -15,7 +15,16 @@ export class LoginService {
   constructor(
     private afAuth: AngularFireAuth, // Firebase authentication service
     private firestore: AngularFirestore // Firebase Firestore service
-  ) {}
+  ) {
+      // Set persistence to SESSION and sign out on initialization
+    this.afAuth.setPersistence('session').then(() => {
+      console.log('Firebase persistence set to SESSION');
+      // this.afAuth.signOut().then(() => {
+      //   console.log('User signed out on service initialization');
+      //   this.currentUserSubject.next(null);
+      // });
+    });
+  }
 
   ngOnInit(): void {
     // log out the user when the app starts
@@ -73,8 +82,10 @@ export class LoginService {
     return this.afAuth.authState.pipe(
       map(user => {
         if (user) {
+          this.currentUserSubject.next({ uid: user.uid, email: user.email });
           return { uid: user.uid, email: user.email };
         } else {
+          this.currentUserSubject.next(null);
           return null;
         }
       })

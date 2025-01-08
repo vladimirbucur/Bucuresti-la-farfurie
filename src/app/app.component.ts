@@ -51,11 +51,12 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     // Subscribe to the logged status from AuthService to determine UI changes
+    this.isLoading = true;
     this.loginService.getCurrentUser().subscribe(user => {
       this.isLoggedIn = !!user;
+      this.isLoading = false;
       console.log('user:', user.email);
     });
-    
 
     this.fbs.connectToDatabase(); // Connect to Firestore
     // Fetch restaurant data from Firestore

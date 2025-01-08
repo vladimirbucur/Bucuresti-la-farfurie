@@ -51,11 +51,9 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     // Subscribe to the logged status from AuthService to determine UI changes
-    this.isLoading = true;
     this.loginService.getCurrentUser().subscribe(user => {
       this.isLoggedIn = !!user;
       console.log('user:', user.email);
-      this.isLoading = false; // Finalizează încărcarea
     });
     
 

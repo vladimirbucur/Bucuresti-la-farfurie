@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
   }];
 
   isLoggedIn = false; // Track login state
-  isLoading = true; // Track loading state
+  isLoading = false; // Track loading state
   activeTab = this.tabs[0].link;
   searchControl = new FormControl(''); // Form control for the search input
   restaurants: any[] = []; // Array to hold restaurant data

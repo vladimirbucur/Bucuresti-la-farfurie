@@ -116,7 +116,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         const matchesCuisine = !cuisineFilter || restaurant.cuisine === cuisineFilter;
         const matchesMeal = !mealFilter || (restaurant.meals && restaurant.meals.includes(mealFilter));
         const matchesRating = !ratingFilter || restaurant.rating >= parseFloat(ratingFilter);
-        const matchesOpenHours = !openHoursFilter || this.isOpenAt(restaurant.original_open_hours, openHoursFilter);
+        const matchesOpenHours = !openHoursFilter || this.isOpenAt(JSON.parse(restaurant.original_open_hours || '{}'), openHoursFilter);
         return matchesType && matchesCuisine && matchesMeal && matchesRating && matchesOpenHours;
       });
 
@@ -139,30 +139,36 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   isOpenAt(openHours: any, time: string): boolean {
-    const dayOfWeek = new Date().toLocaleString("en-US", { weekday: "short" });
-
+    const dayOfWeek = new Date().toLocaleString("en-US", { weekday: "short" }); // Obține ziua curentă (e.g., Mon, Tue)
+    
     if (openHours[dayOfWeek]) {
       return openHours[dayOfWeek].some((interval: string) => {
         const [start, end] = interval.split("-");
         const timeInMinutes = this.convertToMinutes(time);
         const startInMinutes = this.convertToMinutes(start);
         const endInMinutes = this.convertToMinutes(end);
-
+  
+        // Dacă intervalul traversează miezul nopții
         if (endInMinutes < startInMinutes) {
-          return timeInMinutes >= startInMinutes || timeInMinutes <= endInMinutes;
+          return (
+            timeInMinutes >= startInMinutes || // Timpul este în aceeași zi după ora de început
+            timeInMinutes <= endInMinutes // Timpul este în ziua următoare înainte de ora de sfârșit
+          );
         }
-
+  
+        // Cazuri normale (în aceeași zi)
         return timeInMinutes >= startInMinutes && timeInMinutes <= endInMinutes;
       });
     }
-
-    return false;
+  
+    return false; // Dacă nu există ore de funcționare pentru ziua curentă
   }
+  
 
   convertToMinutes(time: string): number {
     const [hours, minutes] = time.split(":").map(Number);
     return hours * 60 + minutes;
-  }
+  }  
 
   fetchAndPlotRestaurants() {
     this.fbs.getRestaurants().subscribe((restaurants: any[]) => {

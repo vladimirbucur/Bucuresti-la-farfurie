@@ -43,6 +43,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   isConnected: boolean = false;
   subscriptionList: Subscription;
   subscriptionObj: Subscription;
+  formattedOpeningHours: string[] = [];
 
   view: any; // Define the 'view' property
 
@@ -95,6 +96,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.mapService.restaurantClicked.subscribe((restaurant) => {
       if (restaurant) {
         this.selectedRestaurant = restaurant; // Show popup with restaurant details
+        this.processOpeningHours(); // Call the method here
       }
     });
   }
@@ -140,7 +142,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   isOpenAt(openHours: any, time: string): boolean {
     const dayOfWeek = new Date().toLocaleString("en-US", { weekday: "short" }); // Obține ziua curentă (e.g., Mon, Tue)
-    
+
     if (openHours[dayOfWeek]) {
       return openHours[dayOfWeek].some((interval: string) => {
         const [start, end] = interval.split("-");
@@ -169,6 +171,42 @@ export class HomeComponent implements OnInit, OnDestroy {
     const [hours, minutes] = time.split(":").map(Number);
     return hours * 60 + minutes;
   }  
+
+  processOpeningHours(): void {
+    if (this.selectedRestaurant?.original_open_hours) {
+      try {
+        const openingHours = JSON.parse(this.selectedRestaurant.original_open_hours || '{}');
+        if (Object.keys(openingHours).length === 0) {
+          this.formattedOpeningHours = ["No opening hours provided."];
+        } else {
+          this.formattedOpeningHours = this.formatOpeningHours(openingHours);
+        }
+      } catch (error) {
+        console.error('Error parsing opening hours:', error);
+        this.formattedOpeningHours = ["No opening hours provided."];
+      }
+    } else {
+      this.formattedOpeningHours = ["No opening hours provided."];
+    }
+  }  
+
+  formatOpeningHours(openingHours: any): string[] {
+    const daysOfWeek = [
+      { short: "Mon", full: "Monday" },
+      { short: "Tue", full: "Tuesday" },
+      { short: "Wed", full: "Wednesday" },
+      { short: "Thu", full: "Thursday" },
+      { short: "Fri", full: "Friday" },
+      { short: "Sat", full: "Saturday" },
+      { short: "Sun", full: "Sunday" },
+    ];
+
+    return daysOfWeek.map(day => {
+      const intervals = openingHours[day.short] || [];
+      const hours = intervals.length > 0 ? intervals.join(", ") : "Closed";
+      return `${day.full}: ${hours}`;
+    });
+  }
 
   fetchAndPlotRestaurants() {
     this.fbs.getRestaurants().subscribe((restaurants: any[]) => {

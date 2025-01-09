@@ -175,3 +175,56 @@
 .close-btn:hover {
   color: #000000;
 }
+
+/* Opening Hours Container */
+.opening-hours {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0;
+  background-color: #f9f9f9; /* Light background */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Individual Day Entry */
+.opening-hours li {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 15px;
+  border-bottom: 1px solid #ddd;
+  font-size: 14px;
+  color: #333;
+}
+
+/* Last Item Without Border */
+.opening-hours li:last-child {
+  border-bottom: none;
+}
+
+/* Day Name Styling */
+.opening-hours .day {
+  font-weight: bold;
+  color: #007bff; /* Primary color */
+}
+
+/* Hours Styling */
+.opening-hours .hours {
+  font-style: italic;
+  color: #555;
+}
+
+/* Closed Days Styling */
+.opening-hours .hours:after {
+  content: '';
+  font-style: normal;
+  color: #f44336; /* Red for closed */
+  margin-left: 5px;
+}
+
+.opening-hours .hours:empty:after {
+  content: 'Closed';
+  font-weight: bold;
+  color: #f44336;
+}

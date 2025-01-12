@@ -16,9 +16,12 @@
       <p><strong>Rating:</strong> {{ selectedRestaurant.rating }}</p>
       <p><strong>Price Range:</strong> {{ selectedRestaurant.price_range }}</p>
       <p><strong>Opening Hours:</strong></p>
-      <pre>{{ selectedRestaurant.original_open_hours }}</pre>
-    </div>
-
+      <ul class="opening-hours">
+        <li *ngFor="let day of formattedOpeningHours">{{ day }}</li>
+      </ul>
+    </div>    
+    
+    
     <!-- Filter Sidebar -->
     <div *ngIf="filterPopupService.isPopupVisible$ | async" class="filter-container">
       <button class="close-btn" (click)="filterPopupService.closePopup()">X</button>

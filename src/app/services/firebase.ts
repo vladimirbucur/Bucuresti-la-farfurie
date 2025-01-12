@@ -87,4 +87,8 @@ export class FirebaseService {
       }) {
           return this.fs.collection('reviews').add(review);
       }
+
+    getRestaurantById(id: string): Observable<any> {
+        return this.fs.collection('restaurants').doc(id).valueChanges();
+    }
 }

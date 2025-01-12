@@ -20,31 +20,6 @@
   width: 100%;
 }
 
-/* Floating Action Button (FAB) styling */
-.fab {
-  position: absolute;
-  bottom: 40px;
-  right: 20px;
-  background-color: #719cf8; /* Light blue button */
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-  cursor: pointer;
-  z-index: 1100;
-  transition: background-color 0.3s, transform 0.3s;
-}
-
-.fab:hover {
-  background-color: #3672f5; /* Darker blue */
-  transform: scale(1.1); /* Slight scale effect on hover */
-}
-
 /* Loading placeholder */
 .loading-placeholder {
   position: absolute;

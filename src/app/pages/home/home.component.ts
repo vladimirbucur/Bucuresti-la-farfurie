@@ -9,18 +9,17 @@ import {
 } from "@angular/core";
 import { Subscription } from "rxjs";
 import { FirebaseService, IUser } from "src/app/services/firebase";
-import { SuperheroFactoryService } from "src/app/services/superhero-factory";
 import { MapService } from 'src/app/services/map.service'; // Import the MapService
 import { FilterPopupService } from 'src/app/services/filter-popup.service';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LoginService } from 'src/app/services/login.service';
 import { User } from 'src/app/models'; // Import the User model
 import { UserService } from 'src/app/services/user.service'; // Import the UserService
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 
 @Component({
-  selector: "app-esri-map",
+  selector: "app-home",
   templateUrl: "./home.component.html",
   styleUrls: ["./home.component.scss"]
 })
@@ -49,9 +48,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   // firebase sync
   isConnected: boolean = false;
-  subscriptionList: Subscription;
-  subscriptionObj: Subscription;
   formattedOpeningHours: string[] = [];
+  recommendedRestaurant: any = null;
 
   isLoggedIn = false;
   isVisited = false;
@@ -67,10 +65,10 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   constructor(
     private fbs: FirebaseService,
-    private sfs: SuperheroFactoryService,
     private mapService: MapService,
+    private route: ActivatedRoute,
+    private router: Router,
     public filterPopupService: FilterPopupService,
-    private userService: UserService,
     private loginService: LoginService,
     private firestore: AngularFirestore 
   ) {}
@@ -86,13 +84,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
     this.isConnected = true;
     this.fbs.connectToDatabase();
-    this.subscriptionList = this.fbs.getChangeFeedList().subscribe((items: IUser[]) => {
-      console.log("users updated: ", items);
-      this.userItems = items;
-    });
-    this.subscriptionObj = this.fbs.getChangeFeedObject().subscribe((stat: IUser) => {
-      console.log("object updated: ", stat);
-    });
 
     // Initialize map using the mapService
     this.mapService.initializeMap(this.mapViewEl.nativeElement);
@@ -132,6 +123,22 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.processOpeningHours(); // Call the method here
       }
     });
+
+        // get reccomendedRestaurant from route
+        this.route.paramMap.subscribe(params => {
+          const restaurantId = params.get('restaurantId');
+          if (restaurantId) {
+            this.fbs.getRestaurantById(restaurantId).subscribe(restaurant => {
+              this.recommendedRestaurant = restaurant;
+              console.log(this.recommendedRestaurant);
+    
+              // Open the popup for the recommended restaurant
+              this.selectedRestaurant = restaurant;
+              this.processOpeningHours();
+    
+            });
+          }
+        });
   }
 
   selectRestaurant(restaurant: any) {
@@ -142,25 +149,29 @@ export class HomeComponent implements OnInit, OnDestroy {
   // Method to submit the review to Firestore
   submitReview() {
     if (this.isLoggedIn && this.selectedRestaurant) {
-      const user = this.getCurrentUser();
       const reviewData = {
         comment: this.review.comment,
         id: new Date().getTime(), // Use a simple timestamp as ID
         rating: this.review.rating,
         restaurant_id: this.selectedRestaurant.id,
         timestamp: new Date(), // Use JavaScript's Date object to get the current timestamp
-        user_id: user.username
+        user_id: '' // Placeholder for the user ID
       };
-  
-      // Save the review data to Firestore
-      this.firestore.collection('reviews').add(reviewData).then(() => {
-        console.log('Review submitted successfully');
-        this.review = { rating: 1, comment: '', restaurant_id: '', user_id: '' }; // Reset the review form
-      }).catch(error => {
-        console.error('Error submitting review:', error);
+
+      this.loginService.getCurrentUser().subscribe(user => {
+        if (user && user.email) {
+          reviewData.user_id = user.email;
+          this.fbs.addReview(reviewData).then(() => {
+            console.log('Review submitted successfully');
+            this.review = { rating: 1, comment: '', restaurant_id: '', user_id: '' }; // Reset the review form
+          }).catch(error => {
+            console.error('Error submitting review:', error);
+          });
+        } else {
+          alert('You need to be logged in to submit a review.');
+        }        
+
       });
-    } else {
-      alert('You need to be logged in to submit a review.');
     }
   }
 
@@ -411,17 +422,17 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.loaded = false;
+    
     if (this.view) {
       this.view.container = null;
     }
   }
 
-  clearRouter() {
-    this.mapService.clearMarkers();
-  }
-
   closePopup() {
     this.selectedRestaurant = null; // Close the popup
+    this.recommendedRestaurant = null;
+    this.router.navigate(['/home/null']);
     this.showReviewSection = false; // Hide the review section when closing the popup
   }
 }

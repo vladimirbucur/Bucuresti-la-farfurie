@@ -12,6 +12,7 @@ export interface Restaurant {
   address: string;
   cuisine: string | null;
   gluten_free: boolean;
+  id: string;
   location: { latitude: number; longitude: number };  // Geolocation object
   meals: string[];  // List of meal types
   name: string;

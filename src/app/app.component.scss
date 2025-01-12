@@ -178,3 +178,101 @@
 .profile-img:hover {
   transform: scale(1.1);
 }
+
+/* Recommendation Popup Styles */
+.recommendation-popup {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: #fdfdfd;
+  border: 1px solid #e0e0e0;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 300px;
+  animation: fadeIn 0.3s ease;
+}
+
+/* Popup Header */
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.popup-header h3 {
+  font-size: 1.2rem;
+  margin: 0;
+  color: #333;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: #999;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.close-btn:hover {
+  color: #333;
+}
+
+/* Popup Text */
+.popup-text {
+  font-size: 1rem;
+  color: #666;
+  margin: 10px 0;
+}
+
+/* Popup Actions */
+.popup-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  width: 100%;
+  justify-content: center;
+}
+
+.recommend-btn {
+  padding: 10px 20px;
+  background-color: #719cf8;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.recommend-btn:hover {
+  background-color: #3672f5;
+  transform: scale(1.05);
+}
+
+.recommendation-popup .close-btn {
+  background-color: transparent;
+  font-size: 1.2rem;
+  color: #999;
+  border: none;
+  cursor: pointer;
+  align-self: flex-end;
+}
+
+/* Animation for popup */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

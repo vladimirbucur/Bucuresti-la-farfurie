@@ -56,6 +56,20 @@
 
 <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
 
+<!-- Recommendation Popup -->
+<div class="recommendation-popup" *ngIf="isRecommendationPopupVisible">
+  <div class="popup-header">
+    <h3>Need a Recommendation?</h3>
+    <button class="close-btn" (click)="closeRecommendationPopup()">&#x2715;</button>
+  </div>
+  <p class="popup-text">Not sure what to eat today? Let us help you!</p>
+  <div class="popup-actions">
+    <button class="recommend-btn" (click)="getRecommendation()">Give me a recommendation</button>
+  </div>
+</div>
+
+<!-- <app-home [recommendedRestaurant]="recommendedRestaurant"></app-home> -->
+
 <!-- Main container to hold the routed content -->
 <div class="container">
   <router-outlet></router-outlet>

@@ -4,7 +4,6 @@ import { LoginService } from 'src/app/services/login.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Restaurant, User } from './../../models';
-import { Console } from 'console';
 
 @Component({
   selector: 'app-profile',

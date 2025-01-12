@@ -23,7 +23,7 @@ export class UserService {
         if (user && user.email) {
           return this.firestore.collection('users').doc(user.email).valueChanges() as Observable<User>;
         } else {
-          throw new Error('User is not logged in.');
+          throw new Error('1User is not logged in.');
         }
       })
     );
@@ -36,7 +36,7 @@ export class UserService {
         if (user && user.email) {
           return this.firestore.collection('users').doc(user.email).get();
         } else {
-          throw new Error('User is not logged in.');
+          throw new Error('2User is not logged in.');
         }
       }),
       switchMap(docSnapshot => {
@@ -50,7 +50,7 @@ export class UserService {
             ref.where(firebase.firestore.FieldPath.documentId(), 'in', favoriteRestaurants) // Query by document ID
           ).valueChanges() as Observable<Restaurant[]>;
         } else {
-          throw new Error('User data not found in Firestore.');
+          throw new Error('3User data not found in Firestore.');
         }
       })
     );
@@ -63,7 +63,7 @@ export class UserService {
         if (user && user.email) {
           return this.firestore.collection('users').doc(user.email).get();
         } else {
-          throw new Error('User is not logged in.');
+          throw new Error('4User is not logged in.');
         }
       }),
       switchMap(docSnapshot => {
@@ -77,7 +77,7 @@ export class UserService {
             ref.where(firebase.firestore.FieldPath.documentId(), 'in', visitedRestaurants) // Query by document ID
           ).valueChanges() as Observable<Restaurant[]>;
         } else {
-          throw new Error('User data not found in Firestore.');
+          throw new Error('5User data not found in Firestore.');
         }
       })
     );

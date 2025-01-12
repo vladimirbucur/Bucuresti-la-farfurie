@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable, BehaviorSubject  } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -87,18 +87,6 @@ export class LoginService {
         } else {
           this.currentUserSubject.next(null);
           return null;
-        }
-      })
-    );
-  }
-
-  getUserProfile(): Observable<any> {
-    return this.getCurrentUser().pipe(
-      map(user => {
-        if (user && user.email) {
-          return this.firestore.collection('users').doc(user.email).valueChanges();
-        } else {
-          throw new Error('User is not logged in.');
         }
       })
     );

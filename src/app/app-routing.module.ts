@@ -7,7 +7,7 @@ import { ProfileComponent } from './pages/profile/profile.component';
 
 export const routes: Routes = [
   {
-    path: 'home',
+    path: 'home/:restaurantId',
     component: HomeComponent,
   },
   { 
@@ -24,12 +24,12 @@ export const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'home/:restaurantId',
     pathMatch: 'full',
   },
   {
     path: '**', // Wildcard route to handle unknown paths
-    redirectTo: 'home',
+    redirectTo: 'home/:restaurantId',
   },
 ];
 

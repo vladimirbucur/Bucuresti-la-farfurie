@@ -3,8 +3,8 @@ export interface User {
   name: string;
   email: string;
   achievements: string[];  // Assuming achievements are strings
-  favorite_restaurants: number[];  // Array of restaurant IDs
-  visited_restaurants: number[];  // Array of restaurant IDs
+  favorite_restaurants: string[];  // Array of restaurant IDs
+  visited_restaurants: string[];  // Array of restaurant IDs
 }
 
 // Restaurant Model

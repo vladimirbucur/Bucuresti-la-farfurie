@@ -19,7 +19,32 @@
       <ul class="opening-hours">
         <li *ngFor="let day of formattedOpeningHours">{{ day }}</li>
       </ul>
-    </div>    
+    
+      <!-- Logic for Logged-In Users -->
+      <div *ngIf="isLoggedIn">
+        <div *ngIf="!isRestaurantVisited(selectedRestaurant)">
+          <button *ngIf="!isRestaurantVisited(selectedRestaurant)" (click)="markAsVisited(selectedRestaurant)">
+            Mark as Visited
+          </button>
+        </div>
+      
+        <div *ngIf="isRestaurantVisited(selectedRestaurant)">
+          <!-- Review Section -->
+          <h4>Leave a Review</h4>
+          <label for="rating">Rating:</label>
+          <select [(ngModel)]="review.rating" id="rating">
+            <option *ngFor="let r of [1,2,3,4,5]" [value]="r">{{ r }}</option>
+          </select>
+          <textarea [(ngModel)]="review.comment" id="comment" rows="3"></textarea>
+          <button (click)="submitReview()">Submit Review</button>
+        </div>
+      </div>
+    
+      <!-- Not Logged In Message -->
+      <div *ngIf="!isLoggedIn">
+        <p>You must be logged in to mark a restaurant as visited and leave a review.</p>
+      </div>
+    </div>   
     
     
     <!-- Filter Sidebar -->

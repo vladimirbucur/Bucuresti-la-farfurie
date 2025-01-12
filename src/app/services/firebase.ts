@@ -66,11 +66,25 @@ export class FirebaseService {
         return this.fs.collection('users').add(user);
     }
 
-    updateUser(userId: string, user: Partial<IUser>) {
-        return this.fs.collection('users').doc(userId).update(user);
+    updateUser(user: IUser) {
+        const userId = user.username; // Assuming email is the unique identifier for the user
+        return this.fs.collection('users').doc(userId).update({
+          visited_restaurants: user.visited_restaurants,
+        });
     }
 
     getRestaurants(): Observable<any[]> {
         return this.fs.collection('restaurants').valueChanges();
     }
+
+    addReview(review: { 
+        comment: string; 
+        id: number; 
+        rating: number; 
+        restaurant_id: number; 
+        timestamp: Date; 
+        user_id: string; 
+      }) {
+          return this.fs.collection('reviews').add(review);
+      }
 }

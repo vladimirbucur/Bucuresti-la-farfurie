@@ -24,12 +24,12 @@ export const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'home/:restaurantId',
+    redirectTo: 'home/null',
     pathMatch: 'full',
   },
   {
     path: '**', // Wildcard route to handle unknown paths
-    redirectTo: 'home/:restaurantId',
+    redirectTo: 'home/null',
   },
 ];
 

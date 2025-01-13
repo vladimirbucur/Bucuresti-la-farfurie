@@ -29,6 +29,8 @@ import { RegisterComponent } from './pages/register/register.component';
 import { RegisterService } from './services/register.service';
 import { ProfileComponent } from './pages/profile/profile.component';
 
+import Config from "@arcgis/core/config";
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -60,4 +62,12 @@ import { ProfileComponent } from './pages/profile/profile.component';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule { 
+  constructor() {
+    // Set the portal URL for ArcGIS Online
+    Config.portalUrl = 'https://www.arcgis.com'; 
+
+    // Set your API key if required
+    Config.apiKey = "AAPTxy8BH1VEsoebNVZXo8HurLDb7lgWhLWBVPBzBrRgly80jCtpL4qsQntGDLbirntOtHjeLPeflh1kwZKubFHjHQfrkUIHaiJn5APeSEU3iot-ZBMMU01xhbh7CxYuN1C0Qm0ZZ2s2MtuaxuoM8pWL34ooA2Pwiay4lmSbp5KxgTPAlRK9m9qE9x6gXU2jzoe_VAPPuk5WK8g8vO7U_ZUXaRJvc52ci9d1w-6faVVedS8.AT1_71qwYr13";
+  }
+}

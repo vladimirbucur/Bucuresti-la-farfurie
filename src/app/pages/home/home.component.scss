@@ -209,26 +209,6 @@
   font-family: 'Avenir Next W00', Arial, sans-serif;
 }
 
-.mark-visited-btn {
-  background: linear-gradient(90deg, #4caf50, #43a047);
-  color: white;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 25px;
-  cursor: pointer;
-  font-size: 1em;
-  font-weight: bold;
-  text-align: center;
-  transition: transform 0.2s ease, box-shadow 0.3s ease;
-  width: 100%;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.mark-visited-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-}
-
 .review-section {
   margin-top: 20px;
   padding: 15px;
@@ -305,16 +285,45 @@
   padding-bottom: 5px; /* Spacing between text and underline */
 }
 
-.favorite-icon {
-  width: 60px; /* Icon size */
-  height: 60px;
+
+.popup-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 20px;
+}
+
+.route-btn, .mark-visited-btn {
+  background: linear-gradient(90deg, #4caf50, #43a047); /* Green gradient */
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 25px; /* Rounded corners */
   cursor: pointer;
-  margin-top: 10px;
+  font-size: 1em;
+  font-weight: bold;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  width: 100%; /* Ensure full width */
+  box-sizing: border-box; /* Consistent box model */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  margin-bottom: 20px; /* Add spacing between buttons */
+}
+
+.route-btn:hover, .mark-visited-btn:hover {
+  transform: translateY(-3px); /* Lift effect on hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+}
+
+.favorite-icon {
+  width: 30px; /* Smaller size */
+  height: 30px;
+  cursor: pointer;
   transition: transform 0.2s ease;
 }
 
 .favorite-icon:hover {
-  transform: scale(1.1); /* Slight enlargement on hover */
+  transform: scale(1.2); /* Slight enlargement on hover */
 }
 
 .heart-icon {
@@ -324,9 +333,63 @@
   stroke: #000; /* Default outline color - black */
   stroke-width: 2px;
   transition: fill 0.3s ease, stroke 0.3s ease;
+  transform: translateY(-8px); /* Moves the icon 4px higher */
 }
 
 .heart-icon.filled {
   fill: #ff0000; /* Filled state - red */
   stroke: #ff0000; /* Outline matches filled color */
+}
+
+/* Directions Popup Styling */
+#directions-popup {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1000;
+  background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white */
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 250px;
+  max-height: 200px;
+  overflow-y: auto; /* Scroll if content exceeds max height */
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
+
+#directions-popup h4 {
+  margin-top: 0;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
+#directions-popup ol {
+  padding-left: 20px;
+  margin: 10px 0;
+  list-style-type: decimal;
+}
+
+#directions-popup li {
+  margin-bottom: 10px;
+  line-height: 1.4;
+  color: #555;
+}
+
+#directions-popup .close-directions-btn {
+  display: block;
+  margin: 10px auto 0;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  text-align: center;
+}
+
+#directions-popup .close-directions-btn:hover {
+  background-color: #0056b3;
 }

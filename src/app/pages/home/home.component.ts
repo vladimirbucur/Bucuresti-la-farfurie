@@ -28,6 +28,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   visitedRestaurantIds: Set<string> = new Set();
   showReviewSection: boolean = false;
   favoriteRestaurantIds: Set<string> = new Set(); // Stores IDs of favorite restaurants
+  directions: any[] = []; // Add this property to store the directions
+
   @Output() mapLoadedEvent = new EventEmitter<boolean>();
 
   @ViewChild("mapViewNode", { static: true }) private mapViewEl: ElementRef;
@@ -148,6 +150,44 @@ export class HomeComponent implements OnInit, OnDestroy {
         });
   }
 
+  calculateRoute() {
+    if (!navigator.geolocation) {
+      alert("Geolocation is not supported by your browser.");
+      return;
+    }
+  
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const userLocation = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        };
+  
+        if (this.selectedRestaurant?.location?.latitude && this.selectedRestaurant?.location?.longitude) {
+          const restaurantLocation = {
+            latitude: this.selectedRestaurant.location.latitude,
+            longitude: this.selectedRestaurant.location.longitude,
+          };
+  
+          this.mapService.calculateRoute(userLocation, restaurantLocation)
+            .then((directions) => {
+              this.directions = directions; // Store the directions in the component
+              console.log("Route displayed on the map.");
+            })
+            .catch((error) => {
+              console.error("Error calculating route:", error);
+            });
+        } else {
+          alert("Restaurant location is unavailable.");
+        }
+      },
+      (error) => {
+        console.error("Error retrieving location:", error);
+        alert("Unable to retrieve your location.");
+      }
+    );
+  } 
+
   selectRestaurant(restaurant: any) {
     this.selectedRestaurant = restaurant;
     this.review.restaurant_id = restaurant.id; // Set the restaurant ID for the review
@@ -210,35 +250,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     // }
     return this.visitedRestaurantIds.has(restaurant.id);
   }
-
-  // isRestaurantVisited(restaurant: any): boolean {
-  //   let isVisited = false;
-  //   this.loginService.getCurrentUser().subscribe(user => {
-  //     if (user && user.email) {
-  //       const userRef = this.firestore.collection('users').doc(user.email);
-  
-  //       // Get the user's current visited restaurants list
-  //       userRef.get().subscribe(docSnapshot => {
-  //         if (docSnapshot.exists) {
-  //           const userData = docSnapshot.data() as User;
-  //           const visitedRestaurants = userData.visited_restaurants || [];
-  
-  //           if (!visitedRestaurants.includes(restaurant.id)) {
-  //             return false;
-  //           } else {
-  //             return true;
-  //           }
-  //         } else {
-  //           return false; // Return false if no user data exists
-  //         }
-  //       });
-  //     } else {
-  //       return false; // Return false if no user is logged in
-  //     }
-  //   });
-    
-  //   return false;  // This will return false due to asynchronous operations
-  // }
 
   // Get the current user (this is a placeholder, replace with actual logic to get the current user)
   getCurrentUser(): IUser {

@@ -123,32 +123,49 @@
 
 /* Popup styling (if needed) */
 .popup {
-  position: absolute;
+  position: fixed;
+  top: 10%;
+  left: 20px;
+  transform: none;
+  width: 90%; /* Responsive width */
+  max-width: 500px; /* Maximum width */
+  height: 80%; /* Fixed height */
+  max-height: 700px; /* Maximum height */
   background: white;
   border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 10px;
-  top: 20px;
-  left: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   z-index: 1000;
-  width: 400px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden; /* Prevent overflow beyond fixed size */
 }
 
-.close-btn {
+.popup-content {
+  height: 100%; /* Ensure it occupies full height */
+  padding: 20px;
+  overflow-y: auto; /* Enable vertical scrolling */
+  padding-right: 10px; /* Prevent content from overlapping scrollbar */
+}
+
+.popup .close-btn {
   position: absolute;
-  top: 5px;
-  right: 5px;
+  top: 10px;
+  right: 10px;
   background: transparent;
   border: none;
-  cursor: pointer;
-  font-size: 14px;
+  font-size: 18px;
   color: #333;
-  z-index: 1001;
+  cursor: pointer;
 }
 
-.close-btn:hover {
-  color: #000000;
+.popup .close-btn:hover {
+  color: black;
+}
+
+@media (max-width: 600px) {
+  .popup {
+    width: 95%; /* Reduce width for smaller screens */
+    height: 90%; /* Increase height for better content display */
+  }
 }
 
 /* Opening Hours Container */
@@ -285,6 +302,11 @@
   padding-bottom: 5px; /* Spacing between text and underline */
 }
 
+.favorite-reviews-container {
+  display: flex; /* Use flexbox to align the items on the same line */
+  align-items: center; /* Vertically center the content */
+  gap: 10px; /* Add space between the heart icon and the button */
+}
 
 .popup-header {
   display: flex;
@@ -315,12 +337,51 @@
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
 }
 
+
+
+.popup-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 20px;
+}
+
+.route-btn, .mark-visited-btn {
+  background: linear-gradient(90deg, #4caf50, #43a047); /* Green gradient */
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 25px; /* Rounded corners */
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: bold;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  width: 100%; /* Ensure full width */
+  box-sizing: border-box; /* Consistent box model */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  margin-bottom: 20px; /* Add spacing between buttons */
+}
+
+.route-btn:hover, .mark-visited-btn:hover {
+  transform: translateY(-3px); /* Lift effect on hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+}
+
+.favorite-reviews-container {
+  display: flex; /* Use flexbox to align the items on the same line */
+  align-items: center; /* Vertically center the content */
+  gap: 10px; /* Add space between the heart icon and the button */
+}
+
+/* Heart Icon styling */
 .favorite-icon {
   width: 30px; /* Smaller size */
   height: 30px;
   cursor: pointer;
   transition: transform 0.2s ease;
 }
+
 
 .favorite-icon:hover {
   transform: scale(1.2); /* Slight enlargement on hover */
@@ -341,6 +402,75 @@
   stroke: #ff0000; /* Outline matches filled color */
 }
 
+.reviews-popup {
+  position: fixed;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%; /* Fixed width */
+  max-width: 500px; /* Maximum width */
+  height: 80%; /* Fixed height */
+  max-height: 700px; /* Maximum height */
+  background: white;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  z-index: 1000;
+  overflow: hidden; /* Prevent content from spilling outside the container */
+}
+
+.reviews-popup .popup-content {
+  height: 100%; /* Occupy full height of the popup */
+  overflow-y: auto; /* Add a vertical scroll bar */
+  padding-right: 10px; /* Prevent content overlap with the scroll bar */
+}
+
+.review-item {
+  margin-bottom: 15px;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.reviews-popup .close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.reviews-popup h3 {
+  font-size: 1.8em; /* Larger font size for emphasis */
+  font-weight: bold; /* Bold text for prominence */
+  color: #3369d5; /* Soft green to match other elements */
+  margin-bottom: 10px; /* Add spacing below the title */
+  text-align: center; /* Center align for balance */
+  text-transform: uppercase; /* Uppercase for a clean, modern look */
+  letter-spacing: 1px; /* Slight spacing for elegance */
+  border-bottom: 2px solid #3369d5; /* Subtle underline to separate title */
+  padding-bottom: 5px; /* Spacing between text and underline */
+}
+
+.view-reviews-btn {
+  background: linear-gradient(90deg, #719cf8, #3672f5); /* Same gradient as submit-review-btn */
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: bold;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Same shadow for consistency */
+}
+
+.view-reviews-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Same hover effect as submit-review-btn */
+}
 /* Directions Popup Styling */
 #directions-popup {
   position: absolute;

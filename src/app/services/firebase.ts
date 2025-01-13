@@ -75,7 +75,7 @@ export class FirebaseService {
 
     getRestaurants(): Observable<any[]> {
         return this.fs.collection('restaurants').valueChanges();
-    }
+    }  
 
     addReview(review: { 
         comment: string; 

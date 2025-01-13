@@ -28,6 +28,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   visitedRestaurantIds: Set<string> = new Set();
   showReviewSection: boolean = false;
   favoriteRestaurantIds: Set<string> = new Set(); // Stores IDs of favorite restaurants
+  showReviewsPopup: boolean = false; // New property for showing reviews popup
+  reviews: any[] = []; // Store reviews for the current restaurant
+
   directions: any[] = []; // Add this property to store the directions
 
   @Output() mapLoadedEvent = new EventEmitter<boolean>();
@@ -187,6 +190,24 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
     );
   } 
+
+  fetchReviews() {
+    if (this.selectedRestaurant) {
+      this.firestore.collection('reviews', ref =>
+        ref.where('restaurant_id', '==', this.selectedRestaurant.id)
+      ).valueChanges().subscribe(reviews => {
+        this.reviews = reviews;
+        console.log('Fetched reviews:', this.reviews);
+      }, error => {
+        console.error('Error fetching reviews:', error);
+      });
+    }
+  }
+
+  viewReviews() {
+    this.fetchReviews();
+    this.showReviewsPopup = true;
+  }
 
   selectRestaurant(restaurant: any) {
     this.selectedRestaurant = restaurant;
@@ -452,6 +473,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.recommendedRestaurant = null;
     this.router.navigate(['/home/null']);
     this.showReviewSection = false; // Hide the review section when closing the popup
+  }
+
+  closeReviewsPopup() {
+    this.showReviewsPopup = false;
   }
 
   loadFavorites() {

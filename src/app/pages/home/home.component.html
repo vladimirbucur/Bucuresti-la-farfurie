@@ -27,37 +27,67 @@
       <ul class="opening-hours">
         <li *ngFor="let day of formattedOpeningHours">{{ day }}</li>
       </ul>
-
-      <!-- Logic for Logged-In Users -->
-      <!-- Actions -->
-    <div class="restaurant-actions">
-      <button class="route-btn" (click)="calculateRoute()" style="padding-bottom: 10px;">Get Directions</button>
-
-      <div *ngIf="isLoggedIn">
-        <!-- Mark as Visited Section -->
-        <div *ngIf="!isRestaurantVisited(selectedRestaurant)">
-          <button class="mark-visited-btn" (click)="markAsVisited(selectedRestaurant)">
-            Mark as Visited
-          </button>
+    
+        <!-- Container for Heart Icon and View Reviews Button -->
+        <div class="favorite-reviews-container">
+          <!-- Heart Icon for Favorite -->
+          <div class="favorite-icon" (click)="toggleFavorite(selectedRestaurant)">
+            <svg [class.filled]="isRestaurantFavorite(selectedRestaurant)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="heart-icon">
+              <path
+                d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+              />
+            </svg>
+          </div>
+        
+          <!-- View Reviews Button -->
+          <button class="view-reviews-btn" (click)="viewReviews()">View Reviews</button>
         </div>
-
-        <!-- Review Section -->
-        <div class="review-section">
-          <h4>Leave a Review</h4>
-          <label for="rating">Rating:</label>
-          <select [(ngModel)]="review.rating" id="rating" class="review-rating">
-            <option *ngFor="let r of [1, 2, 3, 4, 5]" [value]="r">{{ r }}</option>
-          </select>
-          <textarea [(ngModel)]="review.comment" id="comment" rows="3" class="review-textarea" placeholder="Write your review here..."></textarea>
-          <button class="submit-review-btn" (click)="submitReview()">Submit Review</button>
+    
+        <!-- Logic for Logged-In Users -->
+        <div class="restaurant-actions">
+          <button class="route-btn" (click)="calculateRoute()" style="padding-bottom: 10px;">Get Directions</button>
+          <div *ngIf="isLoggedIn">
+            <!-- Mark as Visited Section -->
+            <div *ngIf="!isRestaurantVisited(selectedRestaurant)">
+              <button class="mark-visited-btn" (click)="markAsVisited(selectedRestaurant)">
+                Mark as Visited
+              </button>
+            </div>
+            
+            <!-- Review Section -->
+            <div *ngIf="isRestaurantVisited(selectedRestaurant)" class="review-section">
+              <h4>Leave a Review</h4>
+              <label for="rating">Rating:</label>
+              <select [(ngModel)]="review.rating" id="rating" class="review-rating">
+                <option *ngFor="let r of [1, 2, 3, 4, 5]" [value]="r">{{ r }}</option>
+              </select>
+              <textarea [(ngModel)]="review.comment" id="comment" rows="3" class="review-textarea" placeholder="Write your review here..."></textarea>
+              <button class="submit-review-btn" (click)="submitReview()">Submit Review</button>
+            </div>
+          </div>
+    
+          <!-- Not Logged In Message -->
+          <div *ngIf="!isLoggedIn" class="login-message">
+            <p>You must be logged in to mark a restaurant as visited and leave a review.</p>
+          </div>
         </div>
       </div>
+    </div>
       
-        <!-- Not Logged In Message -->
-        <div *ngIf="!isLoggedIn" class="login-message">
-          <p>You must be logged in to mark a restaurant as visited and leave a review.</p>
+    <div *ngIf="showReviewsPopup" class="reviews-popup">
+      <button class="close-btn" (click)="closeReviewsPopup()">X</button>
+      <h3>Reviews for {{ selectedRestaurant.name }}</h3>
+      <div class="popup-content">
+        <div *ngFor="let review of reviews" class="review-item">
+          <p><strong>Rating:</strong> {{ review.rating }}</p>
+          <p><strong>Comment:</strong> {{ review.comment }}</p>
+          <p><small><strong>By:</strong> {{ review.user_id }}</small></p>
         </div>
-      </div>      
+        <ng-template #noReviews>
+          <p>No reviews available for this restaurant.</p>
+        </ng-template>
+      </div>
+    </div>
     
     
     <!-- Filter Sidebar -->

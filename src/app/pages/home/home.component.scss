@@ -136,7 +136,8 @@
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   z-index: 1000;
-  overflow: hidden; /* Prevent overflow beyond fixed size */
+  overflow: auto; /* Prevent overflow beyond fixed size */
+  padding: 15px;
 }
 
 .popup-content {
@@ -315,7 +316,7 @@
   gap: 20px;
 }
 
-.route-btn, .mark-visited-btn {
+.route-btn, .mark-visited-btn, .view-reviews-btn {
   background: linear-gradient(90deg, #4caf50, #43a047); /* Green gradient */
   color: white;
   padding: 12px 20px;
@@ -332,46 +333,9 @@
   margin-bottom: 20px; /* Add spacing between buttons */
 }
 
-.route-btn:hover, .mark-visited-btn:hover {
+.route-btn:hover, .mark-visited-btn:hover, .view-reviews-btn:hover {
   transform: translateY(-3px); /* Lift effect on hover */
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
-}
-
-
-
-.popup-header {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-  gap: 20px;
-}
-
-.route-btn, .mark-visited-btn {
-  background: linear-gradient(90deg, #4caf50, #43a047); /* Green gradient */
-  color: white;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 25px; /* Rounded corners */
-  cursor: pointer;
-  font-size: 1em;
-  font-weight: bold;
-  text-align: center;
-  transition: transform 0.2s ease, box-shadow 0.3s ease;
-  width: 100%; /* Ensure full width */
-  box-sizing: border-box; /* Consistent box model */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-  margin-bottom: 20px; /* Add spacing between buttons */
-}
-
-.route-btn:hover, .mark-visited-btn:hover {
-  transform: translateY(-3px); /* Lift effect on hover */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
-}
-
-.favorite-reviews-container {
-  display: flex; /* Use flexbox to align the items on the same line */
-  align-items: center; /* Vertically center the content */
-  gap: 10px; /* Add space between the heart icon and the button */
 }
 
 /* Heart Icon styling */
@@ -455,22 +419,8 @@
 
 .view-reviews-btn {
   background: linear-gradient(90deg, #719cf8, #3672f5); /* Same gradient as submit-review-btn */
-  color: white;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 25px;
-  cursor: pointer;
-  font-size: 1em;
-  font-weight: bold;
-  text-align: center;
-  transition: transform 0.2s ease, box-shadow 0.3s ease;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Same shadow for consistency */
 }
 
-.view-reviews-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Same hover effect as submit-review-btn */
-}
 /* Directions Popup Styling */
 #directions-popup {
   position: absolute;

@@ -1,3 +1,11 @@
+interface Review {
+  comment: string;
+  rating: number;
+  restaurant_id: string;
+  timestamp: Date;
+  user_id: string;
+}
+
 import {
   Component,
   OnInit,
@@ -226,21 +234,75 @@ export class HomeComponent implements OnInit, OnDestroy {
         user_id: '' // Placeholder for the user ID
       };
 
+      // Get the current logged-in user's email
       this.loginService.getCurrentUser().subscribe(user => {
         if (user && user.email) {
           reviewData.user_id = user.email;
+          
+          // Add the review to Firestore
           this.fbs.addReview(reviewData).then(() => {
             console.log('Review submitted successfully');
-            this.review = { rating: 1, comment: '', restaurant_id: '', user_id: '' }; // Reset the review form
+
+            // Now, recalculate the restaurant's rating
+            this.recalculateRestaurantRating(this.selectedRestaurant.id).then(() => {
+              console.log('Restaurant rating recalculated successfully');
+            }).catch(error => {
+              console.error('Error recalculating restaurant rating:', error);
+            });
+
+            // Reset the review form
+            this.review = { rating: 1, comment: '', restaurant_id: '', user_id: '' };
           }).catch(error => {
             console.error('Error submitting review:', error);
           });
         } else {
           alert('You need to be logged in to submit a review.');
-        }        
-
+        }
       });
     }
+  }
+
+  recalculateRestaurantRating(restaurantId: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      // Get all reviews for the restaurant
+      const reviewsRef = this.fbs.fs.collection('reviews', ref => ref.where('restaurant_id', '==', restaurantId));
+      
+      reviewsRef.get().toPromise().then(snapshot => {
+        const reviews: Review[] = snapshot.docs.map(doc => doc.data() as Review); // Explicitly type the reviews
+  
+        if (reviews.length > 0) {
+          // Calculate new average rating
+          const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
+          const newRating = totalRating / reviews.length;
+  
+          // Get the restaurant document to update the rating
+          const restaurantRef = this.fbs.fs.collection('restaurants').doc(restaurantId);
+  
+          restaurantRef.update({
+            rating: newRating,
+            total_reviews: reviews.length
+          }).then(() => {
+            resolve(); // Resolve the promise after the restaurant document is updated
+          }).catch(error => {
+            reject(error); // Reject the promise in case of an error
+          });
+        } else {
+          // If no reviews exist, you can set the rating and total_reviews to default values
+          const restaurantRef = this.fbs.fs.collection('restaurants').doc(restaurantId);
+  
+          restaurantRef.update({
+            rating: 0, // Set default rating if no reviews
+            total_reviews: 0
+          }).then(() => {
+            resolve();
+          }).catch(error => {
+            reject(error);
+          });
+        }
+      }).catch(error => {
+        reject(error); // Reject the promise if error fetching reviews
+      });
+    });
   }
 
   fetchVisitedRestaurants() {

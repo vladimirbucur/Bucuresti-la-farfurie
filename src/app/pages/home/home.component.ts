@@ -27,6 +27,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   selectedRestaurant: any = null; // Holds the data for the clicked restaurant
   visitedRestaurantIds: Set<string> = new Set();
   showReviewSection: boolean = false;
+  favoriteRestaurantIds: Set<string> = new Set(); // Stores IDs of favorite restaurants
   @Output() mapLoadedEvent = new EventEmitter<boolean>();
 
   @ViewChild("mapViewNode", { static: true }) private mapViewEl: ElementRef;
@@ -53,6 +54,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   isLoggedIn = false;
   isVisited = false;
+  isFavorite: boolean = false; // Default value, false when not added to favorites
   review = {
     rating: 1,
     comment: '',
@@ -77,7 +79,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.loginService.getCurrentUser().subscribe(user => {
       this.isLoggedIn = !!user; // Check if the user is logged in
       this.fetchVisitedRestaurants();
+      this.loadFavorites(); // Load favorite restaurants
     });
+
+    if (this.selectedRestaurant) {
+      this.isFavorite = this.favoriteRestaurantIds.has(this.selectedRestaurant.id); // Initialize isFavorite
+    }
       
     if (this.isConnected) {
       return;
@@ -435,4 +442,71 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.router.navigate(['/home/null']);
     this.showReviewSection = false; // Hide the review section when closing the popup
   }
+
+  loadFavorites() {
+    this.loginService.getCurrentUser().subscribe(user => {
+      if (user && user.email) {
+        const userRef = this.firestore.collection('users').doc(user.email);
+  
+        userRef.get().subscribe(docSnapshot => {
+          if (docSnapshot.exists) {
+            const userData = docSnapshot.data() as User;
+            const favoriteRestaurants = userData.favorite_restaurants || [];
+            this.favoriteRestaurantIds = new Set(favoriteRestaurants); // Store favorites in local state
+          }
+        }, error => {
+          console.error('Error fetching favorite restaurants:', error);
+        });
+      }
+    });
+  }
+  
+  
+
+  toggleFavorite(restaurant: any) {
+    this.loginService.getCurrentUser().subscribe(user => {
+      if (user && user.email) {
+        const userRef = this.firestore.collection('users').doc(user.email);
+  
+        userRef.get().subscribe(docSnapshot => {
+          if (docSnapshot.exists) {
+            const userData = docSnapshot.data() as User;
+            const favoriteRestaurants = userData.favorite_restaurants || [];
+  
+            if (favoriteRestaurants.includes(restaurant.id)) {
+              // Remove from favorites
+              const updatedFavorites = favoriteRestaurants.filter(id => id !== restaurant.id);
+  
+              userRef.update({ favorite_restaurants: updatedFavorites })
+                .then(() => {
+                  console.log(`Restaurant with ID ${restaurant.id} removed from favorites.`);
+                  this.favoriteRestaurantIds.delete(restaurant.id); // Update local state
+                })
+                .catch(error => console.error('Error removing from favorites:', error));
+            } else {
+              // Add to favorites
+              favoriteRestaurants.push(restaurant.id);
+  
+              userRef.update({ favorite_restaurants: favoriteRestaurants })
+                .then(() => {
+                  console.log(`Restaurant with ID ${restaurant.id} added to favorites.`);
+                  this.favoriteRestaurantIds.add(restaurant.id); // Update local state
+                })
+                .catch(error => console.error('Error adding to favorites:', error));
+            }
+          } else {
+            console.error('User data not found.');
+          }
+        });
+      } else {
+        console.error('User is not logged in.');
+      }
+    });
+  }
+  
+  isRestaurantFavorite(restaurant: any): boolean {
+    return this.favoriteRestaurantIds.has(restaurant.id); // Check if ID exists in the set
+  }
+  
 }
+

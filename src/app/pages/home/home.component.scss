@@ -204,15 +204,103 @@
   color: #f44336;
 }
 
-.mark-visited-btn {
-  background-color: #28a745; /* Green color */
-  color: white;
-  padding: 10px;
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
-  margin-top: 10px;
+.restaurant-actions {
+  margin: 20px;
+  font-family: 'Avenir Next W00', Arial, sans-serif;
 }
+
+.mark-visited-btn {
+  background: linear-gradient(90deg, #4caf50, #43a047);
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: bold;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  width: 100%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
 .mark-visited-btn:hover {
-  background-color: #218838;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.review-section {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.review-section h4 {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.review-rating {
+  width: 100%;
+  padding: 10px;
+  font-size: 1em;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.review-textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  resize: none;
+}
+
+.submit-review-btn {
+  background: linear-gradient(90deg, #719cf8, #3672f5);
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: bold;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  width: 100%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.submit-review-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.login-message {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #fff3e0;
+  border: 1px solid #ffcc80;
+  border-radius: 8px;
+  color: #ff6f00;
+  font-weight: bold;
+  text-align: center;
+}
+
+.popup h3 {
+  font-size: 1.8em; /* Larger font size for emphasis */
+  font-weight: bold; /* Bold text for prominence */
+  color: #3369d5; /* Soft green to match other elements */
+  margin-bottom: 10px; /* Add spacing below the title */
+  text-align: center; /* Center align for balance */
+  text-transform: uppercase; /* Uppercase for a clean, modern look */
+  letter-spacing: 1px; /* Slight spacing for elegance */
+  border-bottom: 2px solid #3369d5; /* Subtle underline to separate title */
+  padding-bottom: 5px; /* Spacing between text and underline */
 }

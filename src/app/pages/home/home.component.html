@@ -21,30 +21,32 @@
       </ul>
     
       <!-- Logic for Logged-In Users -->
-      <div *ngIf="isLoggedIn">
-        <div *ngIf="!isRestaurantVisited(selectedRestaurant)">
-          <button *ngIf="!isRestaurantVisited(selectedRestaurant)" (click)="markAsVisited(selectedRestaurant)">
-            Mark as Visited
-          </button>
+      <div class="restaurant-actions">
+        <div *ngIf="isLoggedIn">
+          <!-- Mark as Visited Section -->
+          <div *ngIf="!isRestaurantVisited(selectedRestaurant)">
+            <button class="mark-visited-btn" (click)="markAsVisited(selectedRestaurant)">
+              Mark as Visited
+            </button>
+          </div>
+      
+          <!-- Review Section -->
+          <div *ngIf="isRestaurantVisited(selectedRestaurant)" class="review-section">
+            <h4>Leave a Review</h4>
+            <label for="rating">Rating:</label>
+            <select [(ngModel)]="review.rating" id="rating" class="review-rating">
+              <option *ngFor="let r of [1,2,3,4,5]" [value]="r">{{ r }}</option>
+            </select>
+            <textarea [(ngModel)]="review.comment" id="comment" rows="3" class="review-textarea" placeholder="Write your review here..."></textarea>
+            <button class="submit-review-btn" (click)="submitReview()">Submit Review</button>
+          </div>
         </div>
       
-        <div *ngIf="isRestaurantVisited(selectedRestaurant)">
-          <!-- Review Section -->
-          <h4>Leave a Review</h4>
-          <label for="rating">Rating:</label>
-          <select [(ngModel)]="review.rating" id="rating">
-            <option *ngFor="let r of [1,2,3,4,5]" [value]="r">{{ r }}</option>
-          </select>
-          <textarea [(ngModel)]="review.comment" id="comment" rows="3"></textarea>
-          <button (click)="submitReview()">Submit Review</button>
+        <!-- Not Logged In Message -->
+        <div *ngIf="!isLoggedIn" class="login-message">
+          <p>You must be logged in to mark a restaurant as visited and leave a review.</p>
         </div>
-      </div>
-    
-      <!-- Not Logged In Message -->
-      <div *ngIf="!isLoggedIn">
-        <p>You must be logged in to mark a restaurant as visited and leave a review.</p>
-      </div>
-    </div>   
+      </div>      
     
     
     <!-- Filter Sidebar -->

@@ -140,7 +140,7 @@ export class AppComponent implements OnInit {
 
   goToHome(): void {
     if (this.recommendedRestaurant) {
-      this.router.navigate(['/home', this.recommendedRestaurant.id]);  // Folosește doar ID-ul restaurantului
+      this.router.navigate(['/home', this.recommendedRestaurant.id]);
     } else {
       this.router.navigate(['/home/null']);
     }
@@ -176,7 +176,6 @@ export class AppComponent implements OnInit {
   }
 
   checkIfPopupShouldBeVisible(): void {
-    // check if activeTab contains '/home' and user is logged in to show the recommendation popup
     const isHomePage = this.activeTab.includes('/home');
 
     if (isHomePage && this.isLoggedIn) {

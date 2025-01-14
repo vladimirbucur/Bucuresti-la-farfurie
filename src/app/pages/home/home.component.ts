@@ -143,8 +143,6 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.processOpeningHours(); // Call the method here
       }
     });
-
-        // get reccomendedRestaurant from route
         this.route.paramMap.subscribe(params => {
           const restaurantId = params.get('restaurantId');
           if (restaurantId) {
@@ -239,18 +237,15 @@ export class HomeComponent implements OnInit, OnDestroy {
         if (user && user.email) {
           reviewData.user_id = user.email;
           
-          // Add the review to Firestore
           this.fbs.addReview(reviewData).then(() => {
             console.log('Review submitted successfully');
 
-            // Now, recalculate the restaurant's rating
             this.recalculateRestaurantRating(this.selectedRestaurant.id).then(() => {
               console.log('Restaurant rating recalculated successfully');
             }).catch(error => {
               console.error('Error recalculating restaurant rating:', error);
             });
 
-            // Reset the review form
             this.review = { rating: 1, comment: '', restaurant_id: '', user_id: '' };
           }).catch(error => {
             console.error('Error submitting review:', error);
@@ -282,9 +277,9 @@ export class HomeComponent implements OnInit, OnDestroy {
             rating: newRating,
             total_reviews: reviews.length
           }).then(() => {
-            resolve(); // Resolve the promise after the restaurant document is updated
+            resolve();
           }).catch(error => {
-            reject(error); // Reject the promise in case of an error
+            reject(error);
           });
         } else {
           // If no reviews exist, you can set the rating and total_reviews to default values
@@ -430,21 +425,19 @@ export class HomeComponent implements OnInit, OnDestroy {
         const timeInMinutes = this.convertToMinutes(time);
         const startInMinutes = this.convertToMinutes(start);
         const endInMinutes = this.convertToMinutes(end);
-  
-        // Dacă intervalul traversează miezul nopții
+
         if (endInMinutes < startInMinutes) {
           return (
-            timeInMinutes >= startInMinutes || // Timpul este în aceeași zi după ora de început
-            timeInMinutes <= endInMinutes // Timpul este în ziua următoare înainte de ora de sfârșit
+            timeInMinutes >= startInMinutes || 
+            timeInMinutes <= endInMinutes
           );
         }
   
-        // Cazuri normale (în aceeași zi)
         return timeInMinutes >= startInMinutes && timeInMinutes <= endInMinutes;
       });
     }
   
-    return false; // Dacă nu există ore de funcționare pentru ziua curentă
+    return false;
   }
   
 

@@ -43,33 +43,4 @@ export class RegisterService {
     });
   }
 
-  // addTestUser(): void {
-  //   const testEmail = 'testuser3@example.com';
-  //   const testPassword = 'test1234';
-
-  //   this.afAuth.createUserWithEmailAndPassword(testEmail, testPassword)
-  //     .then(userCredential => {
-  //       const user = userCredential.user;
-  //       if (user) {
-  //         // Save test user data to Firestore
-  //         this.firestore.collection('users').doc(testEmail).set({
-  //           email: testEmail,
-  //           achievements: [],
-  //           favorite_restaurants: [],
-  //           visited_restaurants: [],
-  //         }).then(() => {
-  //           console.log('Test user added successfully.');
-  //         }).catch(error => {
-  //           console.error('Error saving test user to Firestore:', error);
-  //         });
-  //       }
-  //     })
-  //     .catch(error => {
-  //       console.error('Error creating test user:', error.message);
-  //     });
-  // }
-
-  // use registerUser to add a user with email "test@gmail.com" and password
-  // "password" to the Firestore database
-
 }
